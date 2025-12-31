@@ -1,0 +1,43 @@
+# -----------------------------
+# Global defaults (optional)
+# -----------------------------
+name: KFlavor                # optional, overridable per flavor
+id: kflavor.app              # optional, base bundle id
+# Platform-specific overrides for global id (optional)
+#id:
+#  android: kflavor.app.android
+#  ios: kflavor.app.ios
+firebase: firebase-project-id # optional
+scheme: kflavor               # optional
+app_link: kflavor.com         # optional
+# optional icon config
+icon:
+  ios: path/to/ios/icon.png
+  android:
+    path: path/to/android/adaptive_icon.png
+    background: color
+
+# -----------------------------
+# Flavors
+# -----------------------------
+flavors:
+#  default: dev               # required IF global config are not set
+
+  dev:
+    name: KFlavor Dev         # required IF not defined globally
+    id: kflavor.app.dev       # required IF not defined globally
+    # Platform-specific overrides for global id (optional)
+    #id:
+    #  android: kflavor.app.android
+    #  ios: kflavor.app.ios
+    firebase: firebase-dev    # optional, use default otherwise blank
+    scheme: kflavor-dev       # optional, use default otherwise blank
+    app_link: dev.kflavor.com # optional, use default otherwise blank
+#    flavor specific icon override (optional)
+#    icon:
+#      ios: path/to/ios/icon-dev.png
+#      android:
+#        path: path/to/android/adaptive_icon.png
+#        background: color
+
+#  prod:                      # other flavor continues here
