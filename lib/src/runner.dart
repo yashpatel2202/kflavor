@@ -1,11 +1,11 @@
 import 'package:args/args.dart';
 import 'package:kflavor/src/config/loader.dart';
 import 'package:kflavor/src/logging/logger.dart';
-import 'package:kflavor/src/pocessors/android/application_id_processor.dart';
-import 'package:kflavor/src/pocessors/android/flavor_gradle_processor.dart';
-import 'package:kflavor/src/pocessors/android/gradle_processor.dart';
-import 'package:kflavor/src/pocessors/android/icon_processor.dart';
-import 'package:kflavor/src/pocessors/android/manifest_processor.dart';
+import 'package:kflavor/src/processors/android/application_id_processor.dart';
+import 'package:kflavor/src/processors/android/flavor_gradle_processor.dart';
+import 'package:kflavor/src/processors/android/gradle_processor.dart';
+import 'package:kflavor/src/processors/android/icon_processor.dart';
+import 'package:kflavor/src/processors/android/manifest_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
 class KFlavorRunner {
