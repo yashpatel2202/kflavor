@@ -4,6 +4,7 @@ import 'package:kflavor/src/logging/logger.dart';
 import 'package:kflavor/src/pocessors/android/application_id_processor.dart';
 import 'package:kflavor/src/pocessors/android/flavor_gradle_processor.dart';
 import 'package:kflavor/src/pocessors/android/gradle_processor.dart';
+import 'package:kflavor/src/pocessors/android/icon_processor.dart';
 import 'package:kflavor/src/pocessors/android/manifest_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
@@ -55,8 +56,8 @@ class KFlavorRunner {
 
     log.fine('manifest file updated successfully');
 
-    await _runInTerminal('flutter clean');
-    await _runInTerminal('flutter pub get');
+    await generateIcons(config);
+
     await runInTerminal('flutter clean');
     await runInTerminal('flutter pub get');
 
