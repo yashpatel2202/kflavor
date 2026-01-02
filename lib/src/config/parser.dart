@@ -5,26 +5,22 @@ KConfig kConfigFromJson(Map<String, dynamic> json) {
   final flavorsNode = _map(json['flavors']);
 
   if (flavorsNode == null) {
-    return KConfig(
-      defaultConfig: FlavorConfig(
+    return DefaultConfig(
+      config: FlavorConfig(
         flavor: '',
         config: _buildPlatformConfig(global, null),
       ),
-      flavors: const [],
     );
   }
 
-  final defaultFlavorKey = _str(flavorsNode['default']);
   final flavorEntries = <String, Map<String, dynamic>>{};
 
   for (final entry in flavorsNode.entries) {
-    if (entry.key == 'default') continue;
     final m = _map(entry.value);
     flavorEntries[entry.key] = m ?? {};
   }
 
   final flavorCount = flavorEntries.length;
-  final hasGlobal = global['name'] != null && global['id'] != null;
 
   final flavors = <FlavorConfig>[];
 
@@ -54,40 +50,18 @@ KConfig kConfigFromJson(Map<String, dynamic> json) {
     );
   }
 
-  if (flavorCount == 1 && !hasGlobal) {
+  if (flavorCount == 1) {
     final only = flavorEntries.values.first;
 
-    return KConfig(
-      defaultConfig: FlavorConfig(
+    return DefaultConfig(
+      config: FlavorConfig(
         flavor: '',
         config: _buildPlatformConfig(global, only),
       ),
-      flavors: const [],
     );
   }
 
-  if (!hasGlobal && defaultFlavorKey.isEmpty && flavorCount > 1) {
-    throw StateError(
-      'flavors.default is required when global config is missing',
-    );
-  }
-
-  Map<String, dynamic>? defaultSource;
-
-  if (defaultFlavorKey.isNotEmpty &&
-      flavorEntries.containsKey(defaultFlavorKey)) {
-    defaultSource = flavorEntries[defaultFlavorKey];
-  } else {
-    defaultSource = global;
-  }
-
-  return KConfig(
-    defaultConfig: FlavorConfig(
-      flavor: '',
-      config: _buildPlatformConfig(global, defaultSource),
-    ),
-    flavors: flavors,
-  );
+  return FlavoredConfig(flavors: flavors);
 }
 
 String _str(dynamic v) => v?.toString() ?? '';

@@ -1,13 +1,18 @@
 import 'package:args/args.dart';
 import 'package:kflavor/src/config/loader.dart';
 import 'package:kflavor/src/logging/logger.dart';
+import 'package:kflavor/src/pocessors/android/application_id_processor.dart';
+import 'package:kflavor/src/pocessors/android/flavor_gradle_processor.dart';
+import 'package:kflavor/src/pocessors/android/gradle_processor.dart';
+import 'package:kflavor/src/pocessors/android/manifest_processor.dart';
+import 'package:kflavor/src/utils/terminal_utils.dart';
 
 class KFlavorRunner {
   KFlavorRunner() {
     setupLogging();
   }
 
-  void run(List<String> args) {
+  Future<void> run(List<String> args) async {
     try {
       final parser = ArgParser()
         ..addFlag('help', abbr: 'h', help: 'Display help message')
@@ -25,25 +30,36 @@ class KFlavorRunner {
         return;
       }
 
-      _execute(result);
+      await _execute(result);
     } catch (e) {
       log.severe(e);
     }
   }
 
-  void _execute(ArgResults args) {
+  Future<void> _execute(ArgResults args) async {
     log.fine('Loading configuration...');
 
     final filePath = args['file'] as String?;
+    final config = ConfigLoader.load(filePath: filePath);
 
-    if (filePath != null && filePath.isNotEmpty) {
-      log.info('Loading configuration from: $filePath');
-      ConfigLoader.load(filePath: filePath);
-    } else {
-      log.info('Loading configuration from default location');
-      ConfigLoader.load();
-    }
+    log.fine('Configuration loaded successfully');
 
-    log.finest('Configuration loaded successfully');
+    saveGradleKts(config);
+    updateApplyGradle();
+    removeApplicationId();
+
+    log.fine('gradle file updated successfully');
+
+    updateAndroidManifest(config);
+    autoFormatManifest();
+
+    log.fine('manifest file updated successfully');
+
+    await _runInTerminal('flutter clean');
+    await _runInTerminal('flutter pub get');
+    await runInTerminal('flutter clean');
+    await runInTerminal('flutter pub get');
+
+    log.finest('flavors generated successfully');
   }
 }

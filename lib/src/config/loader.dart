@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:kflavor/src/logging/logger.dart';
 import 'package:kflavor/src/model/config.dart';
 import 'package:yaml/yaml.dart';
 
@@ -8,6 +9,15 @@ part 'parser.dart';
 
 class ConfigLoader {
   static KConfig load({String? filePath}) {
+    if (filePath != null && filePath.isNotEmpty) {
+      log.info('Loading configuration from: $filePath');
+      return ConfigLoader._load(filePath: filePath);
+    }
+    log.info('Loading configuration from default location');
+    return ConfigLoader._load();
+  }
+
+  static KConfig _load({String? filePath}) {
     final file = File(filePath ?? 'flavors.yaml');
     final yamlString = file.readAsStringSync();
 

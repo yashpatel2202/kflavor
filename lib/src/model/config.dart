@@ -1,8 +1,32 @@
-class KConfig {
-  final FlavorConfig defaultConfig;
+import 'package:kflavor/src/utils/string_utils.dart';
+
+sealed class KConfig {
+  const KConfig();
+
+  bool get hasAndroidScheme;
+  bool get hasAndroidAppLink;
+}
+
+class DefaultConfig extends KConfig {
+  final FlavorConfig config;
+
+  @override
+  bool get hasAndroidScheme => config.config.android.hasScheme;
+  @override
+  bool get hasAndroidAppLink => config.config.android.hasAppLink;
+
+  const DefaultConfig({required this.config});
+}
+
+class FlavoredConfig extends KConfig {
   final List<FlavorConfig> flavors;
 
-  const KConfig({required this.defaultConfig, required this.flavors});
+  @override
+  bool get hasAndroidScheme => flavors.any((e) => e.config.android.hasScheme);
+  @override
+  bool get hasAndroidAppLink => flavors.any((e) => e.config.android.hasAppLink);
+
+  const FlavoredConfig({required this.flavors});
 }
 
 class FlavorConfig {
@@ -30,6 +54,9 @@ class Config {
   final String scheme;
   final String appLink;
   final IconConfig? icon;
+
+  bool get hasScheme => scheme.hasValue;
+  bool get hasAppLink => appLink.hasValue;
 
   const Config({
     required this.name,
