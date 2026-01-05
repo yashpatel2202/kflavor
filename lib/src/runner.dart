@@ -2,6 +2,7 @@ import 'package:args/args.dart';
 import 'package:kflavor/src/config/loader.dart';
 import 'package:kflavor/src/logging/logger.dart';
 import 'package:kflavor/src/processors/android/application_id_processor.dart';
+import 'package:kflavor/src/processors/android/firebase_processors/flutterfire_configure.dart';
 import 'package:kflavor/src/processors/android/flavor_gradle_processor.dart';
 import 'package:kflavor/src/processors/android/gradle_processor.dart';
 import 'package:kflavor/src/processors/android/icon_processor.dart';
@@ -58,6 +59,8 @@ class KFlavorRunner {
     autoFormatManifest();
 
     log.fine('manifest file updated successfully');
+
+    await setupFirebase(config);
 
     await generateIcons(config);
 

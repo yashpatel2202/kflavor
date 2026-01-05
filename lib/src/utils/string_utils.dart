@@ -14,4 +14,12 @@ extension StringUtils on String? {
     }
     return value;
   }
+
+  String get spaceSterilize {
+    String value = this ?? '';
+    while (value.contains('  ')) {
+      value = value.replaceAll('  ', ' ');
+    }
+    return value;
+  }
 }

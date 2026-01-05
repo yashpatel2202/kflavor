@@ -2,12 +2,12 @@
 # Global defaults (optional)
 # -----------------------------
 name: KFlavor                # optional, overridable per flavor
-id: kflavor.app              # optional, base bundle id
+id: boilerplate.projecttree.app.dev              # optional, base bundle id
 # Platform-specific overrides for global id (optional)
 #id:
 #  android: kflavor.app.android
 #  ios: kflavor.app.ios
-#firebase: firebase-project-id # optional
+firebase: projecttree-boilerplate-dev # optional
 scheme: kflavor               # optional
 app_link: kflavor.com         # optional
 # optional icon config
@@ -23,28 +23,28 @@ icon:
 flavors:
   dev:
     name: KFlavor Dev         # required IF not defined globally
-    id: kflavor.app.dev       # required IF not defined globally
+    id: boilerplate.projecttree.app.dev       # required IF not defined globally
     # Platform-specific overrides for flavored id (optional)
     #id:
     #  android: kflavor.app.android
     #  ios: kflavor.app.ios
-    firebase: firebase-dev    # optional, use default otherwise blank
+#    firebase: firebase-dev    # optional, use default otherwise blank
     scheme: kflavor-dev       # optional, use default otherwise blank
     app_link: dev.kflavor.com # optional, use default otherwise blank
 #    flavor specific icon override (optional)
     icon:
-#      ios: assets/icon/icon_dev.png
+      ios: assets/icon/icon_dev.png
       android:
         path: assets/icon/icon_android.png
         background: "#e0f9ff"
 
   qa:
     name: KFlavor QA
-    id: kflavor.app.qa
+    id: boilerplate.projecttree.app.dev
     scheme: kflavor-qa
     app_link: qa.kflavor.com
     icon:
-#      ios: assets/icon/icon_dev.png
+      ios: assets/icon/icon_dev.png
       android:
         path: assets/icon/icon_android.png
         background: "#e0f9ff"

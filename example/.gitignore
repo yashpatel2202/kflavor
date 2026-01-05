@@ -51,3 +51,6 @@ app.*.map.json
 /android/app/kflavor.gradle.kts
 
 /lib/kflavor
+/firebase.json
+/lib/firebase_options.dart
+/android/app/src/google-services.json
