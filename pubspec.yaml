@@ -19,6 +19,7 @@ dependencies:
   ansi_styles: ^0.3.2+1
   xml: ^6.6.1
   flutter_launcher_icons: ^0.14.4
+  recase: ^4.1.0
 
 dev_dependencies:
   flutter_test:

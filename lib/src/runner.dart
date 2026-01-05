@@ -6,6 +6,7 @@ import 'package:kflavor/src/processors/android/flavor_gradle_processor.dart';
 import 'package:kflavor/src/processors/android/gradle_processor.dart';
 import 'package:kflavor/src/processors/android/icon_processor.dart';
 import 'package:kflavor/src/processors/android/manifest_processor.dart';
+import 'package:kflavor/src/processors/flavor_generator.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
 class KFlavorRunner {
@@ -42,6 +43,8 @@ class KFlavorRunner {
 
     final filePath = args['file'] as String?;
     final config = ConfigLoader.load(filePath: filePath);
+
+    generateFlavorProvider(config);
 
     log.fine('Configuration loaded successfully');
 
