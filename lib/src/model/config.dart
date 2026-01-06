@@ -83,3 +83,19 @@ class IconConfig {
 
   const IconConfig({required this.path, required this.background});
 }
+
+extension KConfigExtra on KConfig {
+  String mapper({
+    required String Function(FlavorConfig config) map,
+    String join = '',
+  }) {
+    final config = this;
+
+    switch (config) {
+      case DefaultConfig():
+        return map(config.config);
+      case FlavoredConfig():
+        return config.flavors.map((e) => map(e)).join(join);
+    }
+  }
+}

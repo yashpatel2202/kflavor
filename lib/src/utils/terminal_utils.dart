@@ -8,12 +8,7 @@ Future<void> runInTerminal(String command) async {
   final actualCommand = command.spaceSterilize.replaceAll('\n', ' ');
   log.config('running \'$actualCommand\'');
 
-  final splitCommand = actualCommand.split(' ');
-
-  final process = await Process.start(
-    splitCommand[0],
-    splitCommand.length > 1 ? splitCommand.sublist(1) : [],
-  );
+  final process = await Process.start('/bin/bash', ['-c', actualCommand]);
 
   process.stdout.transform(utf8.decoder).listen((data) => stdout.write(data));
 
@@ -24,4 +19,14 @@ Future<void> runInTerminal(String command) async {
   if (exitCode != 0) {
     log.severe('\nProcess exited with error code: $exitCode');
   }
+}
+
+Future<bool> commandExists(String command) async {
+  final isWindows = Platform.isWindows;
+
+  final result = await Process.run(isWindows ? 'where' : 'which', [
+    command,
+  ], runInShell: true);
+
+  return result.exitCode == 0;
 }

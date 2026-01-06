@@ -54,3 +54,6 @@ app.*.map.json
 /firebase.json
 /lib/firebase_options.dart
 /android/app/src/google-services.json
+/ios/Podfile.lock
+/ios/Runner/Configs/
+/ios/Runner/GoogleService-Info.plist

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:args/args.dart';
 import 'package:kflavor/src/config/loader.dart';
 import 'package:kflavor/src/logging/logger.dart';
@@ -9,6 +11,7 @@ import 'package:kflavor/src/processors/android/manifest_processor.dart';
 import 'package:kflavor/src/processors/firebase/flutterfire_configure.dart';
 import 'package:kflavor/src/processors/flavor_generator.dart';
 import 'package:kflavor/src/processors/icon/icon_processor.dart';
+import 'package:kflavor/src/processors/ios/xcodegen_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
 class KFlavorRunner {
@@ -45,6 +48,8 @@ class KFlavorRunner {
 
     _setupAndroid(config);
 
+    await _setupIOS(config);
+
     //todo: in option selector, return null if no access to project
     await setupFirebase(config);
 
@@ -52,6 +57,10 @@ class KFlavorRunner {
 
     await runInTerminal('flutter clean');
     await runInTerminal('flutter pub get');
+
+    if (Platform.isMacOS) {
+      await runInTerminal('cd ios && pod install');
+    }
 
     log.finest('flavors generated successfully');
   }
@@ -74,10 +83,16 @@ void _setupAndroid(KConfig config) {
   updateApplyGradle();
   removeApplicationId();
 
-  log.fine('gradle file updated successfully');
-
   updateAndroidManifest(config);
   autoFormatManifest();
 
-  log.fine('manifest file updated successfully');
+  log.fine('android project updated successfully');
+}
+
+Future<void> _setupIOS(KConfig config) async {
+  if (!Platform.isMacOS) return;
+
+  await createXCodeProject(config);
+
+  log.fine('ios project updated successfully');
 }

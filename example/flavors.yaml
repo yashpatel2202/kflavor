@@ -12,7 +12,7 @@ scheme: kflavor               # optional
 app_link: kflavor.com         # optional
 # optional icon config
 icon:
-#  ios: assets/icon/icon.png
+  ios: assets/icon/icon.png
   android:
     path: assets/icon/icon_android.png
     background: "#FFFFFF"

@@ -58,8 +58,8 @@ Future<void> _flutterFireConfigure(_FFOption option) async {
   final androidFileName =
       'android/app/src/${option.flavor.hasValue ? '${option.flavor}/' : ''}';
 
-  // final iosFileName =
-  //     'ios/Runner/Configs/${option.flavor.hasValue ? '${option.flavor}/' : ''}';
+  final iosFileName =
+      'ios/Runner/Configs/${option.flavor.hasValue ? '${option.flavor}/' : ''}';
 
   final command =
       '''flutterfire configure
@@ -68,7 +68,9 @@ Future<void> _flutterFireConfigure(_FFOption option) async {
                         --android-package-name=${option.androidAppId}
                         --out=$optionFileName
                         --android-out=$androidFileName
-                        --platforms=android,web
+                        --ios-out=$iosFileName
+                        --ios-target=Runner
+                        --platforms=android,ios,web
                         --yes'''
           .spaceSterilize;
 
