@@ -1,13 +1,14 @@
 import 'package:args/args.dart';
 import 'package:kflavor/src/config/loader.dart';
 import 'package:kflavor/src/logging/logger.dart';
+import 'package:kflavor/src/model/config.dart';
 import 'package:kflavor/src/processors/android/application_id_processor.dart';
-import 'package:kflavor/src/processors/android/firebase_processors/flutterfire_configure.dart';
 import 'package:kflavor/src/processors/android/flavor_gradle_processor.dart';
 import 'package:kflavor/src/processors/android/gradle_processor.dart';
-import 'package:kflavor/src/processors/android/icon_processor.dart';
 import 'package:kflavor/src/processors/android/manifest_processor.dart';
+import 'package:kflavor/src/processors/firebase/flutterfire_configure.dart';
 import 'package:kflavor/src/processors/flavor_generator.dart';
+import 'package:kflavor/src/processors/icon/icon_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
 class KFlavorRunner {
@@ -40,26 +41,11 @@ class KFlavorRunner {
   }
 
   Future<void> _execute(ArgResults args) async {
-    log.fine('Loading configuration...');
+    final config = _fetchConfig(args);
 
-    final filePath = args['file'] as String?;
-    final config = ConfigLoader.load(filePath: filePath);
+    _setupAndroid(config);
 
-    generateFlavorProvider(config);
-
-    log.fine('Configuration loaded successfully');
-
-    saveGradleKts(config);
-    updateApplyGradle();
-    removeApplicationId();
-
-    log.fine('gradle file updated successfully');
-
-    updateAndroidManifest(config);
-    autoFormatManifest();
-
-    log.fine('manifest file updated successfully');
-
+    //todo: in option selector, return null if no access to project
     await setupFirebase(config);
 
     await generateIcons(config);
@@ -69,4 +55,29 @@ class KFlavorRunner {
 
     log.finest('flavors generated successfully');
   }
+}
+
+KConfig _fetchConfig(ArgResults args) {
+  log.fine('Loading configuration...');
+
+  final filePath = args['file'] as String?;
+  final config = ConfigLoader.load(filePath: filePath);
+
+  generateFlavorProvider(config);
+
+  log.fine('Configuration loaded successfully');
+  return config;
+}
+
+void _setupAndroid(KConfig config) {
+  saveGradleKts(config);
+  updateApplyGradle();
+  removeApplicationId();
+
+  log.fine('gradle file updated successfully');
+
+  updateAndroidManifest(config);
+  autoFormatManifest();
+
+  log.fine('manifest file updated successfully');
 }

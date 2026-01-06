@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:kflavor/src/model/config.dart';
-import 'package:kflavor/src/processors/android/firebase_processors/option_selector.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
+
+import 'option_selector.dart';
 
 Future<void> setupFirebase(KConfig config) async {
   const directoryPath = 'lib/kflavor/firebase_options';
