@@ -11,6 +11,7 @@ import 'package:kflavor/src/processors/android/manifest_processor.dart';
 import 'package:kflavor/src/processors/firebase/flutterfire_configure.dart';
 import 'package:kflavor/src/processors/flavor_generator.dart';
 import 'package:kflavor/src/processors/icon/icon_processor.dart';
+import 'package:kflavor/src/processors/ide/android_studio/android_studio_config.dart';
 import 'package:kflavor/src/processors/ios/xcodegen_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
@@ -64,6 +65,8 @@ class KFlavorRunner {
     if (config.buildRunner) {
       await runInTerminal('dart run build_runner build -d');
     }
+
+    generateAndroidStudioRunConfig(config);
 
     if (failed > 0) {
       log.warning('Process completed with intermediate failures.');
