@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:kflavor/src/logging/logger.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 
+int failed = 0;
+
 Future<void> runInTerminal(String command) async {
   final actualCommand = command.spaceSterilize.replaceAll('\n', ' ');
   log.config('running \'$actualCommand\'');
@@ -17,6 +19,7 @@ Future<void> runInTerminal(String command) async {
   final exitCode = await process.exitCode;
 
   if (exitCode != 0) {
+    failed++;
     log.severe('\nProcess exited with error code: $exitCode');
   }
 }

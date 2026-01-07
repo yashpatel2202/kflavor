@@ -61,7 +61,11 @@ class KFlavorRunner {
       await runInTerminal('cd ios && pod install');
     }
 
-    //todo: check any failed commands
+    if (failed > 0) {
+      log.warning('Process completed with intermediate failures.');
+      return;
+    }
+
     log.finest('flavors generated successfully');
   }
 }
