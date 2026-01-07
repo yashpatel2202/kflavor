@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:kflavor/src/model/config.dart';
+import 'package:kflavor/src/processors/ios/entitlement_processor.dart';
 import 'package:kflavor/src/processors/ios/info_plist_processor.dart';
 import 'package:kflavor/src/processors/ios/podfile_processor.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
@@ -10,8 +11,9 @@ Future<void> createXCodeProject(KConfig config) async {
   await _verifyXCodeGen();
 
   final entitlement = await _getEntitlement();
+  final hasEntitlement = entitlement.hasValue || config.hasIOSAppLink;
 
-  final content = _getContent(config, entitlement != null);
+  final content = _getContent(config, hasEntitlement);
 
   const path = 'ios/project.yml';
   final file = File(path);
@@ -21,13 +23,15 @@ Future<void> createXCodeProject(KConfig config) async {
 
   await runInTerminal('cd ios && xcodegen generate');
 
-  if (entitlement != null) _saveEntitlement(entitlement);
+  if (entitlement.hasValue) _saveEntitlement(entitlement ?? '');
 
   file.deleteSync();
 
   updatePodFile(config);
 
-  updateInfoPlist();
+  updateEntitlement(config);
+
+  updateInfoPlist(config);
 }
 
 Future<String?> _getEntitlement() async {
@@ -105,29 +109,43 @@ ${config.mapper(map: _profileConfigFileLine, join: '\n')}
 ${config.mapper(map: _releaseConfigFileLine, join: '\n')}''';
 }
 
+String _getDeepLinkLines(String scheme) {
+  return scheme.hasValue ? '''\n          APP_URL_SCHEME: $scheme''' : '';
+}
+
+String _getAppLinkLines(String appLink) {
+  return appLink.hasValue
+      ? '''\n          APP_ASSOCIATED_DOMAIN: $appLink'''
+      : '';
+}
+
 String _targetLine(
   String type,
   String bundleId,
   String appName,
   String flavor,
+  String scheme,
+  String appLink,
 ) {
   return '''        $type${flavor.hasValue ? '-$flavor' : ''}:
           PRODUCT_BUNDLE_IDENTIFIER: $bundleId
           APP_NAME: $appName
-          ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon${flavor.hasValue ? '-$flavor' : ''}''';
+          ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon${flavor.hasValue ? '-$flavor' : ''}${_getDeepLinkLines(scheme)}${_getAppLinkLines(appLink)}''';
 }
 
 String _getFlavoredTargetLines(FlavorConfig config) {
   final flavor = config.flavor;
   final bundle = config.config.ios.bundleId;
   final name = config.config.ios.name;
+  final scheme = config.config.ios.scheme;
+  final appLink = config.config.ios.appLink;
 
   return '''
-${_targetLine('Debug', bundle, name, flavor)}
+${_targetLine('Debug', bundle, name, flavor, scheme, appLink)}
 
-${_targetLine('Profile', bundle, name, flavor)}
+${_targetLine('Profile', bundle, name, flavor, scheme, appLink)}
 
-${_targetLine('Release', bundle, name, flavor)}
+${_targetLine('Release', bundle, name, flavor, scheme, appLink)}
 ''';
 }
 

@@ -6,6 +6,9 @@ sealed class KConfig {
   bool get hasAndroidScheme;
   bool get hasAndroidAppLink;
 
+  bool get hasIOSScheme;
+  bool get hasIOSAppLink;
+
   bool get hasFirebase;
 }
 
@@ -16,6 +19,11 @@ class DefaultConfig extends KConfig {
   bool get hasAndroidScheme => config.config.android.hasScheme;
   @override
   bool get hasAndroidAppLink => config.config.android.hasAppLink;
+
+  @override
+  bool get hasIOSScheme => config.config.ios.hasScheme;
+  @override
+  bool get hasIOSAppLink => config.config.ios.hasAppLink;
 
   @override
   bool get hasFirebase => config.hasFirebase;
@@ -30,6 +38,11 @@ class FlavoredConfig extends KConfig {
   bool get hasAndroidScheme => flavors.any((e) => e.config.android.hasScheme);
   @override
   bool get hasAndroidAppLink => flavors.any((e) => e.config.android.hasAppLink);
+
+  @override
+  bool get hasIOSScheme => flavors.any((e) => e.config.ios.hasScheme);
+  @override
+  bool get hasIOSAppLink => flavors.any((e) => e.config.ios.hasAppLink);
 
   @override
   bool get hasFirebase => flavors.any((e) => e.hasFirebase);
