@@ -8,6 +8,7 @@ sealed class KConfig {
 
   bool get hasIOSScheme;
   bool get hasIOSAppLink;
+  bool get hasIOSDevTeam;
 
   bool get hasFirebase;
 }
@@ -24,6 +25,8 @@ class DefaultConfig extends KConfig {
   bool get hasIOSScheme => config.config.ios.hasScheme;
   @override
   bool get hasIOSAppLink => config.config.ios.hasAppLink;
+  @override
+  bool get hasIOSDevTeam => config.config.ios.hasDevTeam;
 
   @override
   bool get hasFirebase => config.hasFirebase;
@@ -43,6 +46,8 @@ class FlavoredConfig extends KConfig {
   bool get hasIOSScheme => flavors.any((e) => e.config.ios.hasScheme);
   @override
   bool get hasIOSAppLink => flavors.any((e) => e.config.ios.hasAppLink);
+  @override
+  bool get hasIOSDevTeam => flavors.any((e) => e.config.ios.hasDevTeam);
 
   @override
   bool get hasFirebase => flavors.any((e) => e.hasFirebase);
@@ -76,16 +81,19 @@ class Config {
   final String bundleId;
   final String scheme;
   final String appLink;
+  final String developmentTeam;
   final IconConfig? icon;
 
   bool get hasScheme => scheme.hasValue;
   bool get hasAppLink => appLink.hasValue;
+  bool get hasDevTeam => developmentTeam.hasValue;
 
   const Config({
     required this.name,
     required this.bundleId,
     required this.scheme,
     required this.appLink,
+    required this.developmentTeam,
     this.icon,
   });
 }

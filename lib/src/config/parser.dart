@@ -126,6 +126,9 @@ Config _resolveConfig({
     appLink: _str(flavor?['app_link']).isNotEmpty
         ? _str(flavor?['app_link'])
         : _str(global?['app_link']),
+    developmentTeam: _str(flavor?['ios_development_team']).isNotEmpty
+        ? _str(flavor?['ios_development_team'])
+        : _str(global?['ios_development_team']),
     icon: fIcon ?? gIcon,
   );
 }

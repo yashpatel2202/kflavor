@@ -16,6 +16,7 @@ icon:
   android:
     path: assets/icon/icon_android.png
     background: "#FFFFFF"
+ios_development_team: A5LB3EYH3H
 
 # -----------------------------
 # Flavors

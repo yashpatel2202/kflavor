@@ -119,6 +119,13 @@ String _getAppLinkLines(String appLink) {
       : '';
 }
 
+String _getDevelopmentTeam(String devTeam) {
+  return devTeam.hasValue
+      ? '''\n          DEVELOPMENT_TEAM: $devTeam
+          CODE_SIGN_STYLE: Automatic'''
+      : '';
+}
+
 String _targetLine(
   String type,
   String bundleId,
@@ -126,11 +133,12 @@ String _targetLine(
   String flavor,
   String scheme,
   String appLink,
+  String devTeam,
 ) {
   return '''        $type${flavor.hasValue ? '-$flavor' : ''}:
           PRODUCT_BUNDLE_IDENTIFIER: $bundleId
           APP_NAME: $appName
-          ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon${flavor.hasValue ? '-$flavor' : ''}${_getDeepLinkLines(scheme)}${_getAppLinkLines(appLink)}''';
+          ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon${flavor.hasValue ? '-$flavor' : ''}${_getDeepLinkLines(scheme)}${_getAppLinkLines(appLink)}${_getDevelopmentTeam(devTeam)}''';
 }
 
 String _getFlavoredTargetLines(FlavorConfig config) {
@@ -139,13 +147,14 @@ String _getFlavoredTargetLines(FlavorConfig config) {
   final name = config.config.ios.name;
   final scheme = config.config.ios.scheme;
   final appLink = config.config.ios.appLink;
+  final devTeam = config.config.ios.developmentTeam;
 
   return '''
-${_targetLine('Debug', bundle, name, flavor, scheme, appLink)}
+${_targetLine('Debug', bundle, name, flavor, scheme, appLink, devTeam)}
 
-${_targetLine('Profile', bundle, name, flavor, scheme, appLink)}
+${_targetLine('Profile', bundle, name, flavor, scheme, appLink, devTeam)}
 
-${_targetLine('Release', bundle, name, flavor, scheme, appLink)}
+${_targetLine('Release', bundle, name, flavor, scheme, appLink, devTeam)}
 ''';
 }
 
