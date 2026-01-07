@@ -19,11 +19,6 @@ Future<void> createXCodeProject(KConfig config) async {
   final file = File(path);
   file.writeAsStringSync(content);
 
-  await runInTerminal('cd ios/Runner && rm -rf Configs');
-
-  final iosFile = File('ios/Runner/GoogleService-Info.plist');
-  if (iosFile.existsSync()) iosFile.deleteSync(recursive: true);
-
   await runInTerminal('cd ios && xcodegen generate');
 
   if (entitlement.hasValue) _saveEntitlement(entitlement ?? '');
@@ -241,7 +236,7 @@ ${_getTagetLines(config)}
           set -e
 
           DEST="Runner/GoogleService-Info.plist"
-          CONFIG_DIR="Runner/Configs"
+          CONFIG_DIR="Configs"
 
           FLAVOR=\$(echo "\$CONFIGURATION" | tr '[:upper:]' '[:lower:]' | sed 's/.*-//')
 

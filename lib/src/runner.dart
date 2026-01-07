@@ -47,11 +47,11 @@ class KFlavorRunner {
   Future<void> _execute(ArgResults args) async {
     final config = _fetchConfig(args);
 
+    await setupFirebase(config);
+
     _setupAndroid(config);
 
     await _setupIOS(config);
-
-    await setupFirebase(config);
 
     await generateIcons(config);
 

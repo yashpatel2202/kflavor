@@ -21,7 +21,7 @@ Future<void> setupFirebase(KConfig config) async {
   generateFirebaseOptions(config);
 }
 
-void _cleanup() {
+Future<void> _cleanup() async {
   const directoryPath = 'lib/kflavor/firebase_options';
   final directory = Directory(directoryPath);
 
@@ -34,6 +34,8 @@ void _cleanup() {
 
   final iosFile = File('ios/Runner/GoogleService-Info.plist');
   if (iosFile.existsSync()) iosFile.deleteSync(recursive: true);
+
+  await runInTerminal('cd ios && rm -rf Configs');
 }
 
 class _FFOption {
@@ -69,7 +71,7 @@ Future<void> _flutterFireConfigure(_FFOption option) async {
       'android/app/src/${option.flavor.hasValue ? '${option.flavor}/' : ''}';
 
   final iosFileName =
-      'ios/Runner/Configs/${option.flavor.hasValue ? '${option.flavor}/' : ''}';
+      'ios/Configs/${option.flavor.hasValue ? '${option.flavor}/' : ''}';
 
   final command =
       '''flutterfire configure
