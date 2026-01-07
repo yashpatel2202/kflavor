@@ -18,11 +18,10 @@ void generateFirebaseOptions(KConfig config) {
 }
 
 String _getContent(KConfig config) {
+  final accessibleFlavor = _getAccessibleFlavor(config);
+
   return '''import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-${switch (config) {
-    DefaultConfig() => _importLine(config.config.flavor),
-    FlavoredConfig() => config.flavors.map((e) => _importLine(e.flavor)).join(''),
-  }}
+${accessibleFlavor.map((e) => _importLine(e)).join('')}
 import 'kflavor/flavors.dart';
 
 class DefaultFirebaseOptions {
@@ -31,17 +30,40 @@ class DefaultFirebaseOptions {
       case null:
         return null;
 ${switch (config) {
-    DefaultConfig() => _switchLine(config.config.flavor),
-    FlavoredConfig() => config.flavors.map((e) => _switchLine(e.flavor)).join(''),
+    DefaultConfig() => _switchLine(config.config.flavor, accessibleFlavor.contains(config.config.flavor)),
+    FlavoredConfig() => config.flavors.map((e) => _switchLine(e.flavor, accessibleFlavor.contains(e.flavor))).join(''),
   }}    }
   }
 }
 ''';
 }
 
+List<String> _getAccessibleFlavor(KConfig config) {
+  List<String> flavors = [];
+
+  void checkAndAddFlavor(String flavor) {
+    final file = File(
+      'lib/kflavor/firebase_options/firebase_options${flavor.hasValue ? '_$flavor' : ''}.dart',
+    );
+    final available = file.existsSync();
+    if (available) flavors.add(flavor);
+  }
+
+  switch (config) {
+    case DefaultConfig():
+      checkAndAddFlavor(config.config.flavor);
+    case FlavoredConfig():
+      for (final flavor in config.flavors) {
+        checkAndAddFlavor(flavor.flavor);
+      }
+  }
+
+  return flavors;
+}
+
 String _importLine(String flavor) =>
     '\nimport \'kflavor/firebase_options/firebase_options${flavor.hasValue ? '_$flavor' : ''}.dart\' as ${flavor.hasValue ? '${flavor}_' : ''}options;';
 
-String _switchLine(String flavor) =>
+String _switchLine(String flavor, bool hasFlavor) =>
     '''      case KFlavorType.${flavor.hasValue ? flavor : 'none'}:
-        return ${flavor.hasValue ? '${flavor}_' : ''}options.DefaultFirebaseOptions.currentPlatform;\n''';
+        return ${hasFlavor ? '${flavor.hasValue ? '${flavor}_' : ''}options.DefaultFirebaseOptions.currentPlatform' : 'null'};\n''';

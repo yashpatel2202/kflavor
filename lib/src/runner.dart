@@ -50,7 +50,6 @@ class KFlavorRunner {
 
     await _setupIOS(config);
 
-    //todo: in option selector, return null if no access to project
     await setupFirebase(config);
 
     await generateIcons(config);
@@ -62,6 +61,7 @@ class KFlavorRunner {
       await runInTerminal('cd ios && pod install');
     }
 
+    //todo: check any failed commands
     log.finest('flavors generated successfully');
   }
 }
