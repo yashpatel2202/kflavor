@@ -21,6 +21,9 @@ Future<void> createXCodeProject(KConfig config) async {
 
   await runInTerminal('cd ios/Runner && rm -rf Configs');
 
+  final iosFile = File('ios/Runner/GoogleService-Info.plist');
+  if (iosFile.existsSync()) iosFile.deleteSync(recursive: true);
+
   await runInTerminal('cd ios && xcodegen generate');
 
   if (entitlement.hasValue) _saveEntitlement(entitlement ?? '');
