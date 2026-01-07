@@ -51,3 +51,5 @@ flavors:
         background: "#e0f9ff"
 
   prod:                     # same as global configs
+
+build_runner: true

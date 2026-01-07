@@ -3,9 +3,11 @@ part of 'loader.dart';
 KConfig kConfigFromJson(Map<String, dynamic> json) {
   final global = json;
   final flavorsNode = _map(json['flavors']);
+  final buildRunner = _getBuildRunner(json);
 
   if (flavorsNode == null) {
     return DefaultConfig(
+      buildRunner: buildRunner,
       config: FlavorConfig(
         flavor: '',
         config: _buildPlatformConfig(global, null),
@@ -54,6 +56,7 @@ KConfig kConfigFromJson(Map<String, dynamic> json) {
     final only = flavorEntries.values.first;
 
     return DefaultConfig(
+      buildRunner: buildRunner,
       config: FlavorConfig(
         flavor: '',
         config: _buildPlatformConfig(global, only),
@@ -61,7 +64,16 @@ KConfig kConfigFromJson(Map<String, dynamic> json) {
     );
   }
 
-  return FlavoredConfig(flavors: flavors);
+  return FlavoredConfig(buildRunner: buildRunner, flavors: flavors);
+}
+
+bool _getBuildRunner(Map<String, dynamic> json) {
+  final value = json['build_runner'];
+  if (value is bool) return value;
+  if (value is String) {
+    return ['true', 'yes'].contains(value.toLowerCase());
+  }
+  return false;
 }
 
 String _str(dynamic v) => v?.toString() ?? '';

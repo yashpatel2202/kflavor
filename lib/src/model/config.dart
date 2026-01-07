@@ -1,7 +1,7 @@
 import 'package:kflavor/src/utils/string_utils.dart';
 
 sealed class KConfig {
-  const KConfig();
+  const KConfig({required this.buildRunner});
 
   bool get hasAndroidScheme;
   bool get hasAndroidAppLink;
@@ -11,6 +11,8 @@ sealed class KConfig {
   bool get hasIOSDevTeam;
 
   bool get hasFirebase;
+
+  final bool buildRunner;
 }
 
 class DefaultConfig extends KConfig {
@@ -31,7 +33,7 @@ class DefaultConfig extends KConfig {
   @override
   bool get hasFirebase => config.hasFirebase;
 
-  const DefaultConfig({required this.config});
+  const DefaultConfig({required this.config, required super.buildRunner});
 }
 
 class FlavoredConfig extends KConfig {
@@ -52,7 +54,7 @@ class FlavoredConfig extends KConfig {
   @override
   bool get hasFirebase => flavors.any((e) => e.hasFirebase);
 
-  const FlavoredConfig({required this.flavors});
+  const FlavoredConfig({required this.flavors, required super.buildRunner});
 }
 
 class FlavorConfig {

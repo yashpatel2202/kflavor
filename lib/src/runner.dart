@@ -61,6 +61,10 @@ class KFlavorRunner {
       await runInTerminal('cd ios && pod install');
     }
 
+    if (config.buildRunner) {
+      await runInTerminal('dart run build_runner build -d');
+    }
+
     if (failed > 0) {
       log.warning('Process completed with intermediate failures.');
       return;
