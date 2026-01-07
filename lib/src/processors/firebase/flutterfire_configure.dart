@@ -7,12 +7,7 @@ import 'package:kflavor/src/utils/terminal_utils.dart';
 import 'option_selector.dart';
 
 Future<void> setupFirebase(KConfig config) async {
-  const directoryPath = 'lib/kflavor/firebase_options';
-  final directory = Directory(directoryPath);
-
-  if (directory.existsSync()) {
-    directory.deleteSync(recursive: true);
-  }
+  _cleanup();
 
   switch (config) {
     case DefaultConfig():
@@ -24,6 +19,21 @@ Future<void> setupFirebase(KConfig config) async {
   }
 
   generateFirebaseOptions(config);
+}
+
+void _cleanup() {
+  const directoryPath = 'lib/kflavor/firebase_options';
+  final directory = Directory(directoryPath);
+
+  if (directory.existsSync()) {
+    directory.deleteSync(recursive: true);
+  }
+
+  final androidFile = File('android/app/src/google-services.json');
+  if (androidFile.existsSync()) androidFile.deleteSync(recursive: true);
+
+  final iosFile = File('ios/Runner/GoogleService-Info.plist');
+  if (iosFile.existsSync()) iosFile.deleteSync(recursive: true);
 }
 
 class _FFOption {
