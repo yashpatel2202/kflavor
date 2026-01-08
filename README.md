@@ -232,6 +232,7 @@ The following files and directories are typically generated per-flavor or contai
 /android/app/src/google-services.json  # Android Firebase config
 /ios/Configs/                          # generated iOS configuration directory
 /ios/Runner/GoogleService-Info.plist   # iOS Firebase config
+/lib/kflavor/                          # generated with firebase options
 ```
 Add these entries to `.gitignore` in your project root to avoid committing local/generated config files.
 
