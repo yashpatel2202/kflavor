@@ -4,6 +4,12 @@ import 'dart:io';
 import 'package:kflavor/src/logging/logger.dart';
 import 'package:kflavor/src/model/config.dart';
 
+/// Generate or update VSCode `.vscode/launch.json` with run/debug
+/// configurations per flavor.
+///
+/// Existing non-Dart configurations are preserved. If flavors are present,
+/// separate Run/Debug entries are created for each flavor; otherwise a
+/// default main.dart configuration is written.
 void generateVSCodeRunConfig(KConfig config) {
   final dir = Directory('.vscode');
   if (!dir.existsSync()) {

@@ -16,11 +16,22 @@ import 'package:kflavor/src/processors/ide/vscode/visual_studio_config.dart';
 import 'package:kflavor/src/processors/ios/xcodegen_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
+/// Entrypoint runner for the `kflavor` CLI and programmatic usage.
+///
+/// Parses command-line flags, loads the flavor configuration, and invokes the
+/// platform-specific generators and helpers (Android, iOS, icons, Firebase,
+/// IDE run configs). Construct and call `run` with the CLI `args` to execute.
 class KFlavorRunner {
   KFlavorRunner() {
     setupLogging();
   }
 
+  /// Runs the kflavor workflow using the provided CLI arguments.
+  ///
+  /// The `args` list should come from `main(List<String> args)` or similar; the
+  /// method parses flags like `--file`, `--configure-android-studio`, and
+  /// `--configure-vscode` and executes the corresponding steps. Errors are
+  /// logged to the shared `log` instance.
   Future<void> run(List<String> args) async {
     try {
       final parser = ArgParser()
@@ -103,6 +114,10 @@ class KFlavorRunner {
   }
 }
 
+/// Load configuration from the provided `ArgResults`.
+///
+/// Reads `--file` if provided, parses the flavors configuration, and generates
+/// the `lib/kflavor/flavors.dart` provider used by downstream steps.
 KConfig _fetchConfig(ArgResults args) {
   log.fine('Loading configuration...');
 
@@ -115,6 +130,8 @@ KConfig _fetchConfig(ArgResults args) {
   return config;
 }
 
+/// Applies Android-specific project updates (gradle files, manifest,
+/// application id removal).
 void _setupAndroid(KConfig config) {
   saveGradleKts(config);
   updateApplyGradle();
@@ -126,6 +143,8 @@ void _setupAndroid(KConfig config) {
   log.fine('android project updated successfully');
 }
 
+/// Applies iOS-specific project updates (xcodegen project creation and
+/// related file updates). No-op on non-macOS platforms.
 Future<void> _setupIOS(KConfig config) async {
   if (!Platform.isMacOS) return;
 

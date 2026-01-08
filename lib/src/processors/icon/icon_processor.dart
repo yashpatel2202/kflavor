@@ -5,6 +5,12 @@ import 'package:kflavor/src/model/config.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
+/// Generate launcher icons using `flutter_launcher_icons` for configured
+/// flavors.
+///
+/// Writes temporary `flutter_launcher_icons(-<flavor>).yaml` files and invokes
+/// the icon generator. Temporary files are removed after generation. No-op if
+/// no icon configuration is present.
 Future<void> generateIcons(KConfig config) async {
   const fileName = 'flutter_launcher_icons';
 

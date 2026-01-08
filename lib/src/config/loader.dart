@@ -7,6 +7,11 @@ import 'package:yaml/yaml.dart';
 
 part 'parser.dart';
 
+/// Utility that loads a `KConfig` from a YAML file (default `flavors.yaml`).
+///
+/// Use `ConfigLoader.load(filePath: path)` to load configuration from a
+/// specific path; omit `filePath` to load from the default `flavors.yaml`.
+/// Throws if the file cannot be found or parsed.
 class ConfigLoader {
   static KConfig load({String? filePath}) {
     if (filePath != null && filePath.isNotEmpty) {

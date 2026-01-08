@@ -3,18 +3,28 @@ import 'package:kflavor/src/utils/string_utils.dart';
 sealed class KConfig {
   const KConfig({required this.buildRunner});
 
+  /// True when Android scheme (custom URL scheme) is present in any flavor.
   bool get hasAndroidScheme;
+
+  /// True when Android app link (https) is present in any flavor.
   bool get hasAndroidAppLink;
 
+  /// True when iOS URL scheme is present in any flavor.
   bool get hasIOSScheme;
+
+  /// True when iOS app link (associated domains) is present in any flavor.
   bool get hasIOSAppLink;
+
+  /// True when an iOS development team is provided for any flavor.
   bool get hasIOSDevTeam;
 
+  /// True when any flavor includes a Firebase project id.
   bool get hasFirebase;
 
   final bool buildRunner;
 }
 
+/// Represents a single (non-flavored) configuration.
 class DefaultConfig extends KConfig {
   final FlavorConfig config;
 
@@ -36,6 +46,7 @@ class DefaultConfig extends KConfig {
   const DefaultConfig({required this.config, required super.buildRunner});
 }
 
+/// Represents multiple flavors defined in the configuration.
 class FlavoredConfig extends KConfig {
   final List<FlavorConfig> flavors;
 
@@ -57,15 +68,18 @@ class FlavoredConfig extends KConfig {
   const FlavoredConfig({required this.flavors, required super.buildRunner});
 }
 
+/// Wrapper for a single flavor and its platform-specific `PlatformConfig`.
 class FlavorConfig {
   final String flavor;
   final PlatformConfig config;
 
+  /// True when this flavor has an associated Firebase project id.
   bool get hasFirebase => config.firebaseProject.hasValue;
 
   const FlavorConfig({required this.flavor, required this.config});
 }
 
+/// Platform-scoped configuration (android + ios) and optional firebase id.
 class PlatformConfig {
   final Config android;
   final Config ios;
@@ -78,6 +92,8 @@ class PlatformConfig {
   });
 }
 
+/// Platform-specific configuration details used when generating platform
+/// artifacts (bundle/app ids, scheme, app link, team, icon).
 class Config {
   final String name;
   final String bundleId;
@@ -86,8 +102,13 @@ class Config {
   final String developmentTeam;
   final IconConfig? icon;
 
+  /// True when a custom URL scheme is defined.
   bool get hasScheme => scheme.hasValue;
+
+  /// True when an HTTPS app-link (associated domain) is defined.
   bool get hasAppLink => appLink.hasValue;
+
+  /// True when an iOS development team is specified.
   bool get hasDevTeam => developmentTeam.hasValue;
 
   const Config({
@@ -100,6 +121,7 @@ class Config {
   });
 }
 
+/// Icon asset information (path and optional adaptive background).
 class IconConfig {
   final String path;
   final String background;
@@ -107,6 +129,7 @@ class IconConfig {
   const IconConfig({required this.path, required this.background});
 }
 
+/// Helper extension to map and join flavor-specific content for generators.
 extension KConfigExtra on KConfig {
   String mapper({
     required String Function(FlavorConfig config) map,

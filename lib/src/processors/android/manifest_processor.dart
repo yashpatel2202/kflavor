@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:kflavor/src/model/config.dart';
 import 'package:xml/xml.dart';
 
+/// Update the Android `AndroidManifest.xml` application label and intent
+/// filters for deep links/app links based on `config`.
+///
+/// This will set the application label to `@string/app_name` and add/remove
+/// intent-filters for activities according to configured schemes and app links.
 void updateAndroidManifest(KConfig config) {
   final manifestFile = File('android/app/src/main/AndroidManifest.xml');
   final bool hasScheme = config.hasAndroidScheme;
@@ -108,6 +113,7 @@ XmlElement _categoryBrowsable() => XmlElement(XmlName('category'), [
 XmlElement _data(String key, String value) =>
     XmlElement(XmlName('data'), [XmlAttribute(XmlName(key, 'android'), value)]);
 
+/// Reformat manifest attributes to a consistent multi-line style.
 void autoFormatManifest() {
   final manifestFile = File('android/app/src/main/AndroidManifest.xml');
   final content = manifestFile.readAsStringSync();

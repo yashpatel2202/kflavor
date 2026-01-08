@@ -4,6 +4,11 @@ import 'package:kflavor/src/model/config.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 import 'package:recase/recase.dart';
 
+/// Generate the Dart flavor provider file at `lib/kflavor/flavors.dart`.
+///
+/// The generated file exposes `KFlavor` and `KFlavorType` with per-flavor
+/// platform values (ids, appName, scheme, appLink). This is used by the app
+/// at runtime to access current flavor values.
 void generateFlavorProvider(KConfig config) {
   final content = _getContent(config);
 

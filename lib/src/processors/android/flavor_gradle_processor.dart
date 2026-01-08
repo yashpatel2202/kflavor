@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:kflavor/src/model/config.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 
+/// Writes the `kflavor` Gradle snippet matching the project's DSL.
+///
+/// If the project uses Kotlin DSL (`build.gradle.kts`) this writes
+/// `android/app/kflavor.gradle.kts`; otherwise it writes
+/// `android/app/kflavor.gradle`. Throws when no android build file is found.
 void saveGradleKts(KConfig config) {
   const buildKtsPath = 'android/app/build.gradle.kts';
   const buildGroovyPath = 'android/app/build.gradle';
