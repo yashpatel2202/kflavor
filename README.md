@@ -1,39 +1,93 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# kflavor
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter tool to automate and simplify multi-flavor app configuration for Android, iOS, and cross-platform development. kflavor helps you manage build flavors, Firebase configs, icons, Gradle and Xcode settings, and generates IDE run/debug configurations for Android Studio and VSCode.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Generate and manage Android/iOS build flavors from a single YAML file
+- Automatic configuration of Gradle (Kotlin & Groovy) and Xcode projects
+- Firebase integration and configuration per flavor
+- Icon generation for each flavor
+- Generates Android Studio and VSCode run/debug configurations
+- Supports custom arguments for CLI automation
+- Easy integration with CI/CD pipelines
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+1. Add kflavor to your dev dependencies in `pubspec.yaml`:
+   ```yaml
+   dev_dependencies:
+     kflavor:
+   ```
+2. Run `dart pub get` or `flutter pub get`.
+3. Create a `flavors.yaml` file in your project root or use the example provided.
+4. Run the CLI tool:
+   ```sh
+   dart run kflavor
+   ```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### Basic CLI
 
-```dart
-const like = 'sample';
+```sh
+dart run kflavor
+```
+Alternatively, you can pass path for `flavor.yaml` file
+```sh
+dart run kflavor --file flavors.yaml
 ```
 
-## Additional information
+### Generate IDE Configurations
+To Auto-generate IDE Run/Debug config, use following command-line-arguments
+- Android Studio:
+  ```sh
+  dart run kflavor --configure-android-studio
+  # or
+  dart run kflavor --cas
+  ```
+- VSCode:
+  ```sh
+  dart run kflavor --configure-vscode
+  # or
+  dart run kflavor --cvs
+  ```
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+### Example `flavors.yaml`
+
+```yaml
+flavors:
+  dev:
+    id: myapp.app.dev
+    app_name: MyApp Dev
+    icon:
+      ios: assets/icon/icon_dev.png
+      android:
+        path: assets/icon/icon_android.png
+        background: "#E0F9FF"
+    firebase: firebase-dev-project-id
+  prod:
+    id: myapp.app
+    app_name: MyApp
+    icon:
+      ios: assets/icon/icon.png
+      android:
+        path: assets/icon/icon_android.png
+        background: "#FFFFFF"
+    firebase: firebase-prod-project-id
+```
+
+## Advanced
+
+- Supports both Kotlin (`build.gradle.kts`) and Groovy (`build.gradle`) Android projects
+- Handles iOS Info.plist, entitlements
+- Customizes Firebase, icons, and manifest per flavor
+- Generates and cleans up IDE run/debug configs
+
+## Contributing
+
+Contributions are welcome! Please open issues or pull requests on GitHub.
+
+## License
+
+[MIT](LICENSE)
