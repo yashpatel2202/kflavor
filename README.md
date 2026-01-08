@@ -1,3 +1,5 @@
+![](banner_mini.jpg)
+
 # kflavor
 
 A Flutter tool to automate and simplify multi-flavor app configuration for Android, iOS, and cross-platform development. kflavor helps you manage build flavors, Firebase configs, icons, Gradle and Xcode settings, and generates IDE run/debug configurations for Android Studio and VSCode.
@@ -90,4 +92,4 @@ Contributions are welcome! Please open issues or pull requests on GitHub.
 
 ## License
 
-[MIT](LICENSE)
+[LICENSE](LICENSE)

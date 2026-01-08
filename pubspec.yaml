@@ -2,6 +2,8 @@ name: kflavor
 description: "Flutter flavor setup plugin."
 version: 1.0.0
 homepage: https://iamyash.in
+repository: https://github.com/yashpatel2202/kflavor
+issue_tracker: https://github.com/yashpatel2202/kflavor/issues
 
 environment:
   sdk: ^3.10.4
