@@ -42,7 +42,7 @@ void main() {
     });
 
     test('sets CFBundleDisplayName and CFBundleName when keys absent', () {
-      final content = '''<?xml version="1.0" encoding="UTF-8"?>
+      const content = '''<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
 </dict>
@@ -65,7 +65,7 @@ void main() {
     });
 
     test('replaces existing CFBundleDisplayName and CFBundleName values', () {
-      final content = '''<?xml version="1.0" encoding="UTF-8"?>
+      const content = '''<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
   <key>CFBundleDisplayName</key>
@@ -91,7 +91,7 @@ void main() {
     });
 
     test('adds CFBundleURLTypes with scheme when hasIOSScheme is true', () {
-      final content = '''<?xml version="1.0" encoding="UTF-8"?>
+      const content = '''<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
 </dict>
@@ -118,7 +118,7 @@ void main() {
     });
 
     test('replaces existing CFBundleURLSchemes string when present', () {
-      final content = '''<?xml version="1.0" encoding="UTF-8"?>
+      const content = '''<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
   <key>CFBundleURLTypes</key>
@@ -152,7 +152,7 @@ void main() {
     });
 
     test('removes CFBundleURLTypes block when scheme not provided', () {
-      final content = '''<?xml version="1.0" encoding="UTF-8"?>
+      const content = '''<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
   <key>CFBundleURLTypes</key>

@@ -86,7 +86,7 @@ void main() {
     });
 
     test('adds scheme intent-filter when scheme present', () {
-      final manifest = '''<?xml version="1.0" encoding="utf-8"?>
+      const manifest = '''<?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.example.app" xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity android:name=".MainActivity">
@@ -122,7 +122,7 @@ void main() {
     });
 
     test('removes existing deep link intent-filters when flags are false', () {
-      final manifest = '''<?xml version="1.0" encoding="utf-8"?>
+      const manifest = '''<?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.example.app" xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity android:name=".MainActivity">
@@ -162,7 +162,7 @@ void main() {
     });
 
     test('autoFormatManifest reformats multi-attribute opening tags', () {
-      final manifest = '''<?xml version="1.0" encoding="utf-8"?>
+      const manifest = '''<?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.example.app" xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity android:name=".MainActivity" android:exported="true" android:label="@string/app_name">

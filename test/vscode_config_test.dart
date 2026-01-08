@@ -57,7 +57,7 @@ void main() {
           {'name': 'Old Dart', 'type': 'dart', 'program': 'lib/old.dart'},
         ],
       };
-      file.writeAsStringSync(JsonEncoder.withIndent('  ').convert(existing));
+      file.writeAsStringSync(const JsonEncoder.withIndent('  ').convert(existing));
 
       final cfg = DefaultConfig(
         config: FlavorConfig(

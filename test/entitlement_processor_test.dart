@@ -54,7 +54,7 @@ void main() {
     test(
       'inserts associated-domains block before </dict> when appLink present',
       () {
-        final content = '''<?xml version="1.0" encoding="UTF-8"?>
+        const content = '''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -88,7 +88,7 @@ void main() {
     );
 
     test('replaces existing associated-domains block when present', () {
-      final content = '''<?xml version="1.0"?>
+      const content = '''<?xml version="1.0"?>
 <plist>
 <dict>
 <key>com.apple.developer.associated-domains</key>
@@ -117,7 +117,7 @@ void main() {
     });
 
     test('removes associated-domains block when appLink not present', () {
-      final content = '''<?xml version="1.0"?>
+      const content = '''<?xml version="1.0"?>
 <plist>
 <dict>
 <key>com.apple.developer.associated-domains</key>
@@ -146,7 +146,7 @@ void main() {
     });
 
     test('supports <dict/> self-closing by replacing with full dict', () {
-      final content = '''<?xml version="1.0"?>
+      const content = '''<?xml version="1.0"?>
 <plist>
 <dict/>
 </plist>
