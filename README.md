@@ -1,4 +1,6 @@
-![](banner_mini.jpg)
+<p align="center">
+<img src="https://raw.githubusercontent.com/yashpatel2202/kflavor/main/banner_mini.jpg" alt="kflavor" />
+</p>
 
 # kflavor
 

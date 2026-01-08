@@ -3,8 +3,13 @@ import 'dart:io';
 import 'package:ansi_styles/ansi_styles.dart';
 import 'package:logging/logging.dart';
 
+/// Shared `Logger` instance used by the package.
 final log = Logger('KFlavor');
 
+/// Configure the root `Logger` to print colorized output to stdout.
+///
+/// This sets the root level to `Level.ALL` and forwards log records to stdout
+/// with ANSI color formatting for clarity in terminals.
 void setupLogging() {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
@@ -27,5 +32,7 @@ String _colorize(Level level, String message) {
   return message;
 }
 
+/// Return `message` wrapped with ANSI color codes appropriate for `level`.
+/// Only for testing purpose.
 String colorizeMessage(Level level, String message) =>
     _colorize(level, message);

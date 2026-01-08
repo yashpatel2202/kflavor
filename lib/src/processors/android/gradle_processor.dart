@@ -1,5 +1,9 @@
 import 'dart:io';
 
+/// Update the project's build file to include an `apply { from('kflavor...') }`
+/// block. Supports Kotlin DSL (`build.gradle.kts`) and Groovy (`build.gradle`).
+///
+/// Throws if no recognized build file is found.
 void updateApplyGradle() {
   const ktsPath = 'android/app/build.gradle.kts';
   const groovyPath = 'android/app/build.gradle';

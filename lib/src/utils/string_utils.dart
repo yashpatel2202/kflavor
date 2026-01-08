@@ -1,4 +1,5 @@
 extension StringUtils on String? {
+  /// True when the string is non-null and contains non-whitespace characters.
   bool get hasValue {
     final value = this;
     if (value == null) return false;
@@ -7,6 +8,7 @@ extension StringUtils on String? {
     return trimValue.isNotEmpty;
   }
 
+  /// Collapse consecutive blank lines into a single newline.
   String get newLineSterilize {
     String value = this ?? '';
     while (value.contains('\n\n')) {
@@ -15,6 +17,7 @@ extension StringUtils on String? {
     return value;
   }
 
+  /// Collapse consecutive spaces into a single space.
   String get spaceSterilize {
     String value = this ?? '';
     while (value.contains('  ')) {

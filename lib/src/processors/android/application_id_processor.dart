@@ -1,5 +1,11 @@
 import 'dart:io';
 
+/// Remove the `applicationId` entry from the `defaultConfig` block in
+/// `android/app/build.gradle.kts` to avoid conflicts when per-flavor ids are
+/// supplied.
+///
+/// This only operates on the Kotlin DSL file and will no-op if the file or
+/// block cannot be found.
 void removeApplicationId() {
   final file = File('android/app/build.gradle.kts');
   final src = file.readAsStringSync();
@@ -17,6 +23,15 @@ class _Block {
   _Block(this.start, this.end, this.body);
 }
 
+/// Finds the first block with the given [name] in the [src] string.
+///
+/// A block is considered to start with the given [name] followed by an opening
+/// brace `{`, and ends with the matching closing brace `}`. This function
+/// handles nested blocks and ignores blocks that are inside string literals or
+/// comments.
+///
+/// Returns the found block as a [_Block] instance, or null if no block is
+/// found.
 _Block? _findNamedBlock(String src, String name) {
   int depth = 0;
   bool inString = false;
@@ -63,6 +78,13 @@ _Block? _findNamedBlock(String src, String name) {
   return null;
 }
 
+/// Removes the `applicationId` entry from the `defaultConfig` block in the
+/// given [src] string.
+///
+/// This function looks for the `android` block, then the `defaultConfig` block
+/// within it. If found, it removes the `applicationId` line and returns the
+/// updated source string. If the blocks are not found or no `applicationId`
+/// line exists, the original [src] string is returned.
 String _removeApplicationIdFromDefaultConfig(String src) {
   final androidBlock = _findNamedBlock(src, 'android');
   if (androidBlock == null) return src;

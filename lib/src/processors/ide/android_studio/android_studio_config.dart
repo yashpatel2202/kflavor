@@ -5,6 +5,11 @@ import 'package:kflavor/src/model/config.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 import 'package:xml/xml.dart';
 
+/// Generate or update Android Studio run configurations in `.idea/workspace.xml`.
+///
+/// If the `.idea/workspace.xml` file is missing this function logs a warning
+/// and returns. Existing Flutter run configurations are replaced with per-
+/// flavor configurations when flavors are present.
 void generateAndroidStudioRunConfig(KConfig config) {
   final file = File('.idea/workspace.xml');
 

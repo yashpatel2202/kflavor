@@ -7,6 +7,11 @@ import 'package:kflavor/src/processors/ios/podfile_processor.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
+/// Create or update the Xcode project using `xcodegen` based on `config`.
+///
+/// This function generates `ios/project.yml`, runs `xcodegen generate`, and
+/// updates Podfile, entitlements and Info.plist as needed. This is a macOS-
+/// only operation and will no-op on other platforms.
 Future<void> createXCodeProject(KConfig config) async {
   await _verifyXCodeGen();
 

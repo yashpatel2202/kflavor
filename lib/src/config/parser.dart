@@ -1,5 +1,11 @@
 part of 'loader.dart';
 
+/// Parse a decoded JSON/YAML map into a `KConfig` model.
+///
+/// This converts the provided `json` map into either a `DefaultConfig` or a
+/// `FlavoredConfig`, validating required fields (like `name` and `id`) and
+/// normalizing per-platform values. Throws `StateError` for missing required
+/// flavor fields.
 KConfig kConfigFromJson(Map<String, dynamic> json) {
   final global = json;
   final flavorsNode = _map(json['flavors']);

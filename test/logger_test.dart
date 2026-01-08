@@ -23,7 +23,7 @@ void main() {
     });
 
     test('colorizeMessage for unknown level returns plain', () {
-      final custom = Level('CUSTOM', 1500);
+      const custom = Level('CUSTOM', 1500);
       final s = colorizeMessage(custom, 'plain');
       expect(s.contains('plain'), isTrue);
       expect(s.contains('\x1B['), isFalse);

@@ -6,6 +6,11 @@ import 'package:kflavor/src/utils/terminal_utils.dart';
 
 import 'option_selector.dart';
 
+/// Run `flutterfire configure` per-flavor when Firebase project ids are set.
+///
+/// This will cleanup previous firebase artifacts, run `flutterfire configure`
+/// for each configured flavor (writing outputs to `lib/kflavor/firebase_options`)
+/// and then generate a consolidated `lib/firebase_options.dart` selector.
 Future<void> setupFirebase(KConfig config) async {
   await _cleanup();
 
@@ -21,6 +26,12 @@ Future<void> setupFirebase(KConfig config) async {
   generateFirebaseOptions(config);
 }
 
+/// Delete previous firebase configuration files and directories.
+///
+/// This removes the `lib/kflavor/firebase_options` directory, deletes
+/// `android/app/src/google-services.json` and `ios/Runner/GoogleService-Info.plist`
+/// if they exist, and runs a terminal command to remove the `Configs` directory
+/// in the `ios` folder.
 Future<void> _cleanup() async {
   const directoryPath = 'lib/kflavor/firebase_options';
   final directory = Directory(directoryPath);
@@ -61,6 +72,15 @@ class _FFOption {
   });
 }
 
+/// Configure Firebase for a specific flavor.
+///
+/// This runs the `flutterfire configure` command with the appropriate options
+/// for the given flavor, including project ID, iOS bundle ID, and Android app ID.
+///
+/// The generated files are placed in the `lib/kflavor/firebase_options` directory,
+/// and the command also specifies output locations for Android and iOS native code.
+///
+/// The [option] parameter must not have an empty project ID.
 Future<void> _flutterFireConfigure(_FFOption option) async {
   if (!option.projectId.hasValue) return;
 

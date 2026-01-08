@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:kflavor/src/model/config.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 
+/// Generate `lib/firebase_options.dart` which selects the correct
+/// `FirebaseOptions` implementation for the active flavor at runtime.
+///
+/// This inspects the generated `lib/kflavor/firebase_options` files and
+/// creates a wrapper that exposes `DefaultFirebaseOptions.currentPlatform`.
 void generateFirebaseOptions(KConfig config) {
   const filePath = 'lib/firebase_options.dart';
   final file = File(filePath);

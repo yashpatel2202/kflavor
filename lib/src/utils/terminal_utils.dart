@@ -4,8 +4,13 @@ import 'dart:io';
 import 'package:kflavor/src/logging/logger.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 
+/// Global counter incremented for any non-zero exit code from `runInTerminal`.
 int failed = 0;
 
+/// Run [command] in a bash subshell and stream output to stdout/stderr.
+///
+/// The function blocks until the process exits and increments [failed] if the
+/// exit code is non-zero. Use this for short-lived external tool invocations.
 Future<void> runInTerminal(String command) async {
   final actualCommand = command.spaceSterilize.replaceAll('\n', ' ');
   log.config('running \'$actualCommand\'');
@@ -24,6 +29,8 @@ Future<void> runInTerminal(String command) async {
   }
 }
 
+/// Check whether [command] exists in PATH by running `which` (or `where` on
+/// Windows). Returns true when the executable is found.
 Future<bool> commandExists(String command) async {
   final isWindows = Platform.isWindows;
 

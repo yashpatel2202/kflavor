@@ -112,7 +112,7 @@ void main() {
       expect(content.contains("appLink: 'null'"), isTrue);
 
       // now generate with scheme/appLink values by creating a FlavorConfig with values
-      final flav = FlavorConfig(
+      const flav = FlavorConfig(
         flavor: 'main',
         config: PlatformConfig(
           android: Config(
@@ -136,7 +136,7 @@ void main() {
       );
 
       generateFlavorProvider(
-        FlavoredConfig(flavors: [flav], buildRunner: false),
+        const FlavoredConfig(flavors: [flav], buildRunner: false),
       );
       content = File('lib/kflavor/flavors.dart').readAsStringSync();
       expect(content.contains("scheme: 'kflavor'"), isTrue);
