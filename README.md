@@ -176,7 +176,7 @@ Notes & quick tips
 - Use platform-specific `id` mappings when Android and iOS identifiers must differ.
 - Validate YAML with an editor linter or `yamllint` if you see parsing errors.
 
-For a full, annotated example and detailed reference, see the project's example `flavors.yaml`: [example/flavors.yaml](example/flavors.yaml)
+For a full, annotated example and detailed reference, see the project's example `flavors.yaml`: [example/flavors.yaml](https://raw.githubusercontent.com/yashpatel2202/kflavor/main/example/flavors.yaml)
 
 ## Advanced
 
