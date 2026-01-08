@@ -12,6 +12,12 @@ void updateInfoPlist(KConfig config) {
 
   content = _setPlistKey(content, 'CFBundleName', '\$(APP_NAME)');
 
+  content = _setPlistKey(
+    content,
+    'CFBundleIdentifier',
+    '\$(PRODUCT_BUNDLE_IDENTIFIER)',
+  );
+
   content = _setCFBundleURLScheme(
     content,
     config.hasIOSScheme ? '\$(APP_URL_SCHEME)' : '',

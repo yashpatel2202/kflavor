@@ -9,6 +9,7 @@ A Flutter tool to automate and simplify multi-flavor app configuration for Andro
 ## Features
 
 - Generate and manage Android/iOS build flavors from a single YAML file
+- No need to maintain multiple messy looking `main.dart` entrypoint. uses single `main.dart` entrypoint.
 - Automatic configuration of Gradle (Kotlin & Groovy) and Xcode projects
 - Firebase integration and configuration per flavor
 - Icon generation for each flavor
@@ -63,7 +64,7 @@ To Auto-generate IDE Run/Debug config, use following command-line-arguments
 flavors:
   dev:
     id: myapp.app.dev
-    app_name: MyApp Dev
+    name: MyApp Dev
     icon:
       ios: assets/icon/icon_dev.png
       android:
@@ -72,7 +73,7 @@ flavors:
     firebase: firebase-dev-project-id
   prod:
     id: myapp.app
-    app_name: MyApp
+    name: MyApp
     icon:
       ios: assets/icon/icon.png
       android:
@@ -81,7 +82,7 @@ flavors:
     firebase: firebase-prod-project-id
 ```
 
-## flavors.yaml reference
+### flavors.yaml reference
 
 Below is a compact 1–2 line reference for every supported key in `flavors.yaml`, with example syntax for each entry. Use these snippets as building blocks — per-flavor values inside `flavors:` override global values.
 
@@ -176,7 +177,64 @@ Notes & quick tips
 - Use platform-specific `id` mappings when Android and iOS identifiers must differ.
 - Validate YAML with an editor linter or `yamllint` if you see parsing errors.
 
-For a full, annotated example and detailed reference, see the project's example `flavors.yaml`: [example/flavors.yaml](example/flavors.yaml)
+For a full, annotated example and detailed reference, see the project's example `flavors.yaml`: [example/flavors.yaml](https://github.com/yashpatel2202/kflavor/blob/main/example/flavors.yaml)
+
+### Icon preparation
+
+kflavor includes template icons you can use as a visual guide and to ensure all flavors have consistent icon boundaries and spacing. The templates are located in the example app:
+
+- [example/assets/icon/](https://github.com/yashpatel2202/kflavor/tree/main/example/assets/icon)
+
+Preparation checklist and recommendations:
+
+- Create one set of icons per flavor. If you have three flavors (e.g. `dev`, `qa`, `prod`), prepare three icon sets.
+- Use the template icons in `example/assets/icon/` as the exact visual boundary and spacing guide. Keep the transparent margins / blank space the same as the templates for both Android and iOS icons so generated adaptive icons and platform icons align visually across flavors.
+- Keep source images at the same pixel dimensions as the template files. This avoids unexpected cropping or scaling when kflavor or platform tooling generates resized assets.
+- For Android adaptive icons, prepare a foreground image (main artwork) and a background image/color if you want an adaptive icon with a separate background. If the template uses a single PNG, match its layout and blank space.
+- For iOS, provide a high-resolution square PNG (the template preserves the safe area and margins). Using the same visual boundary ensures icons look consistent when iOS masks/rounds them.
+
+### Manually run/build/archive from terminal (per flavor)
+
+Below are common terminal commands and patterns for running, building, and archiving your app for a specific flavor. Replace `<flavor>` with your flavor name.
+
+- Flutter (run on device/emulator):
+  ```
+  flutter run --flavor <flavor>
+  ```
+  - If you have a single-flavor project, you can often run `flutter run` without `--flavor` (use your default entrypoint as appropriate).
+
+- Flutter (build Android APK / AAB):
+  ```
+  flutter build apk --flavor <flavor>
+  flutter build appbundle --flavor <flavor>
+  ```
+
+- Flutter (build iOS / create an .ipa):
+  ```
+  flutter build ipa --flavor <flavor>
+  ```
+  - Alternatively archive with Xcode:
+    - Open `ios/Runner.xcworkspace`, select the scheme for your flavor and Archive via Xcode's Product → Archive.
+    
+#### Single-flavor behavior
+
+If your `flavors.yaml` defines exactly one flavor, kflavor treats the project as a "no-flavor" configuration. That means you do not need to pass a `--flavor` to kflavor's CLI or to Flutter build/run commands — the single flavor is used as the default. If you add additional flavors later, pass the desired flavor name to the commands shown below.
+
+### Safely git-ignorable files
+
+The following files and directories are typically generated per-flavor or contain machine-specific configuration and can be safely added to your project's `.gitignore` (they are environment/build artifacts or local config files that should not be committed):
+```
+/android/app/src/{any_flavor}          # generated Android flavor source directories
+/android/app/kflavor.gradle.kts        # generated Gradle Kotlin script for kflavor
+/lib/kflavor                           # generated Dart helper library
+/firebase.json                         # local Firebase emulator or config file
+/lib/firebase_options.dart             # generated FlutterFire options file
+/android/app/src/google-services.json  # Android Firebase config
+/ios/Configs/                          # generated iOS configuration directory
+/ios/Runner/GoogleService-Info.plist   # iOS Firebase config
+/lib/kflavor/                          # generated with firebase options
+```
+Add these entries to `.gitignore` in your project root to avoid committing local/generated config files.
 
 ## Advanced
 
