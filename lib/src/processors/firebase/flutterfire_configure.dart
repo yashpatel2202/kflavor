@@ -7,7 +7,7 @@ import 'package:kflavor/src/utils/terminal_utils.dart';
 import 'option_selector.dart';
 
 Future<void> setupFirebase(KConfig config) async {
-  _cleanup();
+  await _cleanup();
 
   switch (config) {
     case DefaultConfig():
