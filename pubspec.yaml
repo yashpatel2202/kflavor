@@ -1,5 +1,5 @@
 name: kflavor
-description: "Flutter flavor setup plugin."
+description: "kflavor automates Flutter multi-flavor configuration for Android and iOS, managing Firebase settings, icons, Gradle/Xcode config, and IDE run/debug profiles."
 version: 1.0.3
 homepage: https://iamyash.in
 repository: https://github.com/yashpatel2202/kflavor
