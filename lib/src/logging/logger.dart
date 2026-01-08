@@ -26,3 +26,6 @@ String _colorize(Level level, String message) {
   }
   return message;
 }
+
+String colorizeMessage(Level level, String message) =>
+    _colorize(level, message);
