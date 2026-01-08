@@ -12,6 +12,7 @@ import 'package:kflavor/src/processors/firebase/flutterfire_configure.dart';
 import 'package:kflavor/src/processors/flavor_generator.dart';
 import 'package:kflavor/src/processors/icon/icon_processor.dart';
 import 'package:kflavor/src/processors/ide/android_studio/android_studio_config.dart';
+import 'package:kflavor/src/processors/ide/vscode/visual_studio_config.dart';
 import 'package:kflavor/src/processors/ios/xcodegen_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
@@ -29,6 +30,26 @@ class KFlavorRunner {
           abbr: 'f',
           help: 'Path to configuration file',
           valueHelp: 'path/to/kflavor.yaml',
+        )
+        ..addFlag(
+          'configure-android-studio',
+          help: 'Generate Android Studio run configurations',
+          defaultsTo: false,
+        )
+        ..addFlag(
+          'cas',
+          help: 'Alias for --configure-android-studio',
+          defaultsTo: false,
+        )
+        ..addFlag(
+          'configure-vscode',
+          help: 'Generate VSCode run/debug configurations',
+          defaultsTo: false,
+        )
+        ..addFlag(
+          'cvs',
+          help: 'Alias for --configure-vscode',
+          defaultsTo: false,
         );
 
       final result = parser.parse(args);
@@ -66,7 +87,12 @@ class KFlavorRunner {
       await runInTerminal('dart run build_runner build -d');
     }
 
-    generateAndroidStudioRunConfig(config);
+    if (args['configure-android-studio'] == true || args['cas'] == true) {
+      generateAndroidStudioRunConfig(config);
+    }
+    if (args['configure-vscode'] == true || args['cvs'] == true) {
+      generateVSCodeRunConfig(config);
+    }
 
     if (failed > 0) {
       log.warning('Process completed with intermediate failures.');

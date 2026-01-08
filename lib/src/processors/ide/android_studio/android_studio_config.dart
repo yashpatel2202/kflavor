@@ -8,7 +8,10 @@ import 'package:xml/xml.dart';
 void generateAndroidStudioRunConfig(KConfig config) {
   final file = File('.idea/workspace.xml');
 
-  if (!file.existsSync()) return;
+  if (!file.existsSync()) {
+    log.warning('Looks like project is not opened in Android Studio IDE');
+    return;
+  }
 
   final content = file.readAsStringSync();
 
