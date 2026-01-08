@@ -64,7 +64,7 @@ To Auto-generate IDE Run/Debug config, use following command-line-arguments
 flavors:
   dev:
     id: myapp.app.dev
-    app_name: MyApp Dev
+    name: MyApp Dev
     icon:
       ios: assets/icon/icon_dev.png
       android:
@@ -73,7 +73,7 @@ flavors:
     firebase: firebase-dev-project-id
   prod:
     id: myapp.app
-    app_name: MyApp
+    name: MyApp
     icon:
       ios: assets/icon/icon.png
       android:
