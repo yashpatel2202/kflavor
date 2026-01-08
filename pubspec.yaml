@@ -1,6 +1,6 @@
 name: kflavor
 description: "Flutter flavor setup plugin."
-version: 0.0.1
+version: 1.0.0
 homepage: https://iamyash.in
 
 environment:
