@@ -16,6 +16,7 @@ A Flutter tool to automate and simplify multi-flavor app configuration for Andro
 - Generates Android Studio and VSCode run/debug configurations
 - Supports custom arguments for CLI automation
 - Easy integration with CI/CD pipelines
+- Splash screen generation
 
 ## Getting started
 
@@ -143,16 +144,13 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
     ios: com.example.myapp.ios
   ```
 
-- `firebase` — Optional Firebase project id or label used to pick/copy Firebase config per flavor.
+- `firebase` — Optional Firebase setting per flavor.
   ```yaml
-  firebase: my-firebase-project-id
+  firebase:
+    project: my-firebase-project-id
+    account: user@example.com
+    web_id: 123:XXXXXXXXXX
   ```
-
-- `firebase_account` — Optional Firebase account email, to use when you manage multiple Firebase accounts. When provided, kflavor will attempt to use this account's credentials or selection when copying Firebase config files for a flavor (useful if you have separate service accounts or multiple Firebase logins).
-  ```yaml
-  firebase_account: "user@example.com"
-  ```
-
   - Multi-account setup: see the Firebase CLI documentation for managing multiple accounts and authentication (useful when you run `firebase` commands from different accounts): https://firebase.google.com/docs/cli
 
 - `scheme` — Optional URL scheme for deep links (overrides per-flavor if set there).
@@ -173,7 +171,6 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
       path: assets/icon/icon_android.png
       background: "#FFFFFF"
   ```
-
   - `icon.ios` — path to the iOS icon source image (relative to project root).
     `ios: assets/icon/icon.png`
   - `icon.android.path` — path to the Android icon source image.
@@ -181,6 +178,15 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
   - `icon.android.background` — optional hex background for Android adaptive icons. Always quote hex strings.
     `background: "#e0f9ff"`
 
+- `splash` — Optional splash configuration. If `splash.icon` is missing kflavor falls back to flavor.icon then global icon.
+  ```yaml
+  splash:
+    background: "#FFFFFF"
+    icon:
+      path: assets/icon/icon_android.png
+      background: "#FFFFFF"
+  ```
+  
 - `ios_development_team` — Optional Apple Team ID used for automatic signing when generating Xcode targets.
   ```yaml
   ios_development_team: ABCD1EFG2H
@@ -253,7 +259,7 @@ Below are common terminal commands and patterns for running, building, and archi
   ```
   - Alternatively archive with Xcode:
     - Open `ios/Runner.xcworkspace`, select the scheme for your flavor and Archive via Xcode's Product → Archive.
-    
+
 #### Single-flavor behavior
 
 If your `flavors.yaml` defines exactly one flavor, kflavor treats the project as a "no-flavor" configuration. That means you do not need to pass a `--flavor` to kflavor's CLI or to Flutter build/run commands — the single flavor is used as the default. If you add additional flavors later, pass the desired flavor name to the commands shown below.
