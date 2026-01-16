@@ -28,34 +28,65 @@ A Flutter tool to automate and simplify multi-flavor app configuration for Andro
 3. Create a `flavors.yaml` file in your project root or use the example provided.
 4. Run the CLI tool:
    ```sh
-   dart run kflavor
+   dart run kflavor generate
    ```
+
+Note: Recent releases introduce two explicit subcommands — `generate` and `configure` — that make automating specific workflows easier (details below). When no subcommand is provided `kflavor` defaults to the generate workflow.
 
 ## Usage
 
 ### Basic CLI
 
+You can run the default (generate) workflow with:
 ```sh
-dart run kflavor
+dart run kflavor generate
 ```
-Alternatively, you can pass path for `flavor.yaml` file
+
+Or use the new subcommand form to be explicit and to place flags after the subcommand:
 ```sh
-dart run kflavor --file flavors.yaml
+dart run kflavor generate --file flavors.yaml
+dart run kflavor configure --flutter-clean --android-studio
+```
+
+#### Subcommands and flags
+
+- generate
+  - Runs the full generation workflow: Firebase setup, Android/iOS updates, icons, and optional build-runner steps.
+  - Accepts the same common flags as the root parser (for convenience): 
+    - `--file` / `-f`
+    - `--configure-android-studio`/`--cas`
+    - `--configure-vscode`/`--cvs`.
+
+- configure
+  - Use this subcommand to run environment maintenance and IDE generation tasks without performing the whole `generate` sequence.
+  - Flags supported by `configure`:
+    - `--flutter-clean` — run `flutter clean && flutter pub get`.
+    - `--clear-pod` — remove `ios/Pods/` and `ios/Podfile.lock` (if present) and run `pod install` on macOS.
+    - `--android-studio` or `--as` — generate Android Studio run/debug configurations (calls `generateAndroidStudioRunConfig`).
+    - `--vscode` or `--vs` — generate VSCode run/debug configurations (calls `generateVSCodeRunConfig`).
+
+Examples:
+```sh
+# Full generate workflow (same as running without a subcommand)
+dart run kflavor generate --file flavors.yaml
+
+# Configure only: run cleanup and regenerate IDE configs
+dart run kflavor configure --flutter-clean --clear-pod --android-studio
 ```
 
 ### Generate IDE Configurations
-To Auto-generate IDE Run/Debug config, use following command-line-arguments
+To Auto-generate IDE Run/Debug config, use the following flags or subcommands:
 - Android Studio:
   ```sh
-  dart run kflavor --configure-android-studio
+  dart run kflavor configure --android-studio
   # or
-  dart run kflavor --cas
+  dart run kflavor configure --as
   ```
 - VSCode:
   ```sh
-  dart run kflavor --configure-vscode
+  dart run kflavor configure --vscode
   # or
-  dart run kflavor --cvs
+  dart run kflavor configure --vs
   ```
 
 ### Example `flavors.yaml`
@@ -224,15 +255,16 @@ If your `flavors.yaml` defines exactly one flavor, kflavor treats the project as
 
 The following files and directories are typically generated per-flavor or contain machine-specific configuration and can be safely added to your project's `.gitignore` (they are environment/build artifacts or local config files that should not be committed):
 ```
-/android/app/src/{any_flavor}          # generated Android flavor source directories
-/android/app/kflavor.gradle.kts        # generated Gradle Kotlin script for kflavor
-/lib/kflavor                           # generated Dart helper library
-/firebase.json                         # local Firebase emulator or config file
-/lib/firebase_options.dart             # generated FlutterFire options file
-/android/app/src/google-services.json  # Android Firebase config
-/ios/Configs/                          # generated iOS configuration directory
-/ios/Runner/GoogleService-Info.plist   # iOS Firebase config
-/lib/kflavor/                          # generated with firebase options
+/android/app/src/{any_flavor}
+/android/app/kflavor.gradle.kts
+/android/app/kflavor.gradle
+/lib/kflavor
+/firebase.json
+/lib/firebase_options.dart
+/android/app/src/google-services.json
+/ios/Configs/
+/ios/Runner/GoogleService-Info.plist
+/lib/kflavor/
 ```
 Add these entries to `.gitignore` in your project root to avoid committing local/generated config files.
 
