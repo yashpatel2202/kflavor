@@ -22,7 +22,7 @@ PlatformConfig _platformConfig(String id, {String firebase = ''}) =>
         developmentTeam: '',
         icon: null,
       ),
-      firebaseProject: firebase,
+      firebase: firebase.isNotEmpty ? FirebaseConfig(project: firebase) : null,
     );
 
 void main() {

@@ -27,7 +27,8 @@ void main() {
         // a command that fails should increment failed. Use a simple `exit 1`
         // which will be executed by the native shell selected in
         // `runInTerminal` (cmd.exe on Windows or /bin/bash on POSIX).
-        await runInTerminal('exit 1');
+        // request a report so `runInTerminal` will increment `failed` for non-zero exit
+        await runInTerminal('exit 1', report: true);
         expect(failed, equals(before + 1));
       },
     );
