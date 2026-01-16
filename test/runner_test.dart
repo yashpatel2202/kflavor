@@ -30,5 +30,20 @@ void main() {
       file.writeAsStringSync('flavors: []');
       await runner.run(['--file', 'flavors.yaml']);
     });
+
+    test('runs generate subcommand with --file after subcommand', () async {
+      final runner = KFlavorRunner();
+      final file = File('flavors.yaml');
+      file.writeAsStringSync('flavors: []');
+      await runner.run(['generate', '--file', 'flavors.yaml']);
+    });
+
+    test(
+      'configure subcommand parses --android-studio without throwing',
+      () async {
+        final runner = KFlavorRunner();
+        await runner.run(['configure', '--android-studio']);
+      },
+    );
   });
 }
