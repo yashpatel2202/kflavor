@@ -6,14 +6,9 @@ void main() {
     test(
       'commandExists returns true for bash (or sh) and false for nonsense',
       () async {
-        // On most systems, 'bash' exists; fall back to 'sh' if not
-        final bashExists = await commandExists('bash');
-        final shExists = await commandExists('sh');
-        expect(
-          bashExists || shExists,
-          isTrue,
-          reason: 'Expected either bash or sh to exist on the test machine',
-        );
+        // Check that `dart` is available on the test machine (cross-platform).
+        final dartExists = await commandExists('dart');
+        expect(dartExists, isTrue, reason: 'Expected `dart` to be on PATH');
 
         final random = await commandExists('this-command-should-not-exist-xyz');
         expect(random, isFalse);
@@ -29,8 +24,10 @@ void main() {
         await runInTerminal('echo terminal-test');
         expect(failed, equals(before));
 
-        // a command that fails should increment failed
-        await runInTerminal('false');
+        // a command that fails should increment failed. Use a simple `exit 1`
+        // which will be executed by the native shell selected in
+        // `runInTerminal` (cmd.exe on Windows or /bin/bash on POSIX).
+        await runInTerminal('exit 1');
         expect(failed, equals(before + 1));
       },
     );

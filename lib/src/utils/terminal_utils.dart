@@ -15,7 +15,15 @@ Future<void> runInTerminal(String command) async {
   final actualCommand = command.spaceSterilize.replaceAll('\n', ' ');
   log.config('running \'$actualCommand\'');
 
-  final process = await Process.start('/bin/bash', ['-c', actualCommand]);
+  final isWindows = Platform.isWindows;
+
+  // Use the native shell on Windows (cmd.exe). On POSIX systems use /bin/bash.
+  final Process process;
+  if (isWindows) {
+    process = await Process.start('cmd.exe', ['/C', actualCommand]);
+  } else {
+    process = await Process.start('/bin/bash', ['-c', actualCommand]);
+  }
 
   process.stdout.transform(utf8.decoder).listen((data) => stdout.write(data));
 

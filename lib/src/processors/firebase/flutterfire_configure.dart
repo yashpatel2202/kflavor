@@ -46,7 +46,12 @@ Future<void> _cleanup() async {
   final iosFile = File('ios/Runner/GoogleService-Info.plist');
   if (iosFile.existsSync()) iosFile.deleteSync(recursive: true);
 
-  await runInTerminal('cd ios && rm -rf Configs');
+  // Remove the ios/Configs directory using Dart so this works on Windows
+  // and POSIX shells equally.
+  final configsDir = Directory('ios/Configs');
+  if (configsDir.existsSync()) {
+    configsDir.deleteSync(recursive: true);
+  }
 }
 
 class _FFOption {
