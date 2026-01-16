@@ -14,6 +14,7 @@ import 'package:kflavor/src/processors/icon/icon_processor.dart';
 import 'package:kflavor/src/processors/ide/android_studio/android_studio_config.dart';
 import 'package:kflavor/src/processors/ide/vscode/visual_studio_config.dart';
 import 'package:kflavor/src/processors/ios/xcodegen_processor.dart';
+import 'package:kflavor/src/processors/splash/splash_processor.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
 
 /// Entrypoint runner for the `kflavor` CLI and programmatic usage.
@@ -238,6 +239,8 @@ void _runVSCodeConfig(KConfig config) {
 
 Future<void> _generate(KConfig config, ArgResults args) async {
   await setupFirebase(config);
+
+  await generateSplash(config);
 
   _setupAndroid(config);
 

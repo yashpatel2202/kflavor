@@ -85,12 +85,14 @@ class PlatformConfig {
   final Config ios;
   final String firebaseAccount;
   final String firebaseProject;
+  final SplashConfig? splash;
 
   const PlatformConfig({
     required this.android,
     required this.ios,
     this.firebaseAccount = '',
     required this.firebaseProject,
+    this.splash,
   });
 }
 
@@ -129,6 +131,18 @@ class IconConfig {
   final String background;
 
   const IconConfig({required this.path, required this.background});
+}
+
+class SplashConfig {
+  final String iconPath;
+  final String iconBackground;
+  final String background;
+
+  const SplashConfig({
+    required this.iconPath,
+    required this.iconBackground,
+    required this.background,
+  });
 }
 
 /// Helper extension to map and join flavor-specific content for generators.
