@@ -248,12 +248,61 @@ PlatformConfig _buildPlatformConfig(
       flavor: flavor,
     ),
     ios: _resolveConfig(platform: 'ios', global: global, flavor: flavor),
-    firebaseProject: _str(flavor?['firebase']).isNotEmpty
-        ? _str(flavor?['firebase'])
-        : _str(global?['firebase']),
-    firebaseAccount: _str(flavor?['firebase_account']).isNotEmpty
-        ? _str(flavor?['firebase_account'])
-        : _str(global?['firebase_account']),
+    firebase: _parseFirebase(global: global, flavor: flavor),
     splash: _parseSplash(global: global, flavor: flavor),
   );
+}
+
+/// Parse the firebase configuration which may be expressed in multiple ways:
+/// - String: shorthand project id
+/// - Map: { project, account, web_id | webId }
+/// Also supports the older top-level `firebase_account` fallback for account.
+FirebaseConfig? _parseFirebase({
+  required Map<String, dynamic>? global,
+  required Map<String, dynamic>? flavor,
+}) {
+  final raw = flavor?['firebase'] ?? global?['firebase'];
+
+  // If not present as a node, there's nothing to parse.
+  if (raw == null) return null;
+
+  // Helper to find top-level firebase_account (legacy)
+  String fallbackAccount() {
+    return _str(flavor?['firebase_account']).hasValue
+        ? _str(flavor?['firebase_account'])
+        : _str(global?['firebase_account']);
+  }
+
+  if (raw is String) {
+    final project = raw.trim();
+    if (!project.hasValue) return null;
+    return FirebaseConfig(
+      project: project,
+      account: fallbackAccount(),
+      webId: '',
+    );
+  }
+
+  if (raw is Map) {
+    final project = _str(raw['project']).hasValue
+        ? _str(raw['project'])
+        : _str(raw['project_id']);
+
+    if (!project.hasValue) return null;
+
+    String account = '';
+    if (_str(raw['account']).hasValue) {
+      account = _str(raw['account']);
+    } else {
+      account = fallbackAccount();
+    }
+
+    final webId = _str(raw['web_id']).hasValue
+        ? _str(raw['web_id'])
+        : _str(raw['webId']);
+
+    return FirebaseConfig(project: project, account: account, webId: webId);
+  }
+
+  return null;
 }

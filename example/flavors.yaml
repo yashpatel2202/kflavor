@@ -7,8 +7,10 @@ id: kflavor.app                                             # optional, base bun
 #id:
 #  android: kflavor.app.android
 #  ios: kflavor.app.ios
-firebase: kflavor-app                                       # optional
-firebase_account: "yrp.baps@gmail.com"                      # optional
+firebase:                                                   # optional
+  project: kflavor-app
+  account: "yrp.baps@gmail.com"                             # optional
+  web_id: "1:83139990596:web:f65c2cb5692b38e3985811"        # optional
 scheme: kflavor                                             # optional
 app_link: kflavor.com                                       # optional
 # optional icon config
@@ -31,7 +33,10 @@ flavors:
   dev:
     name: KFlavor Dev                                       # required if not defined globally
     id: kflavor.app.dev                                     # required if not defined globally
-    firebase: kflavor-app-dev                               # optional, use global otherwise blank
+    firebase:                                               # optional, use global otherwise blank
+      project: kflavor-app-dev
+      account: "yrp.baps@gmail.com"
+      web_id: "1:370962456122:web:75315d74ed8931b0c19f03"
     scheme: kflavor-dev                                     # optional, use global otherwise blank
     app_link: dev.kflavor.com                               # optional, use global otherwise blank
 #   flavor specific icon override (optional)
