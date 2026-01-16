@@ -58,6 +58,7 @@ class _FFOption {
   final String androidAppId;
   final String iosBundleId;
   final String projectId;
+  final String firebaseAccount;
   final String flavor;
 
   factory _FFOption._fromConfig(FlavorConfig config) {
@@ -65,6 +66,7 @@ class _FFOption {
       androidAppId: config.config.android.bundleId,
       iosBundleId: config.config.ios.bundleId,
       projectId: config.config.firebaseProject,
+      firebaseAccount: config.config.firebaseAccount,
       flavor: config.flavor,
     );
   }
@@ -73,6 +75,7 @@ class _FFOption {
     required this.androidAppId,
     required this.iosBundleId,
     required this.projectId,
+    required this.firebaseAccount,
     required this.flavor,
   });
 }
@@ -101,6 +104,7 @@ Future<void> _flutterFireConfigure(_FFOption option) async {
   final command =
       '''flutterfire configure
                         --project=${option.projectId}
+                        ${option.firebaseAccount.hasValue ? '--account=${option.firebaseAccount}' : ''}
                         --ios-bundle-id=${option.iosBundleId}
                         --android-package-name=${option.androidAppId}
                         --out=$optionFileName
@@ -111,5 +115,5 @@ Future<void> _flutterFireConfigure(_FFOption option) async {
                         --yes'''
           .spaceSterilize;
 
-  await runInTerminal(command);
+  await runInTerminal(command, report: false);
 }

@@ -148,6 +148,13 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
   firebase: my-firebase-project-id
   ```
 
+- `firebase_account` — Optional Firebase account email, to use when you manage multiple Firebase accounts. When provided, kflavor will attempt to use this account's credentials or selection when copying Firebase config files for a flavor (useful if you have separate service accounts or multiple Firebase logins).
+  ```yaml
+  firebase_account: "user@example.com"
+  ```
+
+  - Multi-account setup: see the Firebase CLI documentation for managing multiple accounts and authentication (useful when you run `firebase` commands from different accounts): https://firebase.google.com/docs/cli
+
 - `scheme` — Optional URL scheme for deep links (overrides per-flavor if set there).
   ```yaml
   scheme: myapp
