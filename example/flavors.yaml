@@ -17,6 +17,11 @@ icon:
   android:
     path: assets/icon/icon_android.png
     background: "#FFFFFF"
+splash:
+  background: "#FFFFFF"
+  icon:                                                     # optional, uses icon config if not defined
+    path: assets/icon/icon_android.png
+    background: "#FFFFFF"
 ios_development_team: ABCD1EFG2H
 
 # -----------------------------
@@ -35,6 +40,11 @@ flavors:
       android:
         path: assets/icon/icon_android.png
         background: "#e0f9ff"
+    splash:
+      background: "#FFFFFF"
+      icon:
+        path: assets/icon/icon_android.png
+        background: "#e0f9ff"
 
   qa:
     name: KFlavor QA
@@ -43,8 +53,13 @@ flavors:
     scheme: kflavor-qa
     app_link: qa.kflavor.com
     icon:
-      ios: assets/icon/icon_dev.png
+      ios: assets/icon/icon_qa.png
       android:
+        path: assets/icon/icon_android.png
+        background: "#e0f9ff"
+    splash:
+      background: "#FFFFFF"
+      icon:
         path: assets/icon/icon_android.png
         background: "#e0f9ff"
 
