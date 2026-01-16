@@ -165,5 +165,8 @@ PlatformConfig _buildPlatformConfig(
     firebaseProject: _str(flavor?['firebase']).isNotEmpty
         ? _str(flavor?['firebase'])
         : _str(global?['firebase']),
+    firebaseAccount: _str(flavor?['firebase_account']).isNotEmpty
+        ? _str(flavor?['firebase_account'])
+        : _str(global?['firebase_account']),
   );
 }

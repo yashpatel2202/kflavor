@@ -83,11 +83,13 @@ class FlavorConfig {
 class PlatformConfig {
   final Config android;
   final Config ios;
+  final String firebaseAccount;
   final String firebaseProject;
 
   const PlatformConfig({
     required this.android,
     required this.ios,
+    this.firebaseAccount = '',
     required this.firebaseProject,
   });
 }

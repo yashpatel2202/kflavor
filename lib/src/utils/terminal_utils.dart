@@ -11,7 +11,7 @@ int failed = 0;
 ///
 /// The function blocks until the process exits and increments [failed] if the
 /// exit code is non-zero. Use this for short-lived external tool invocations.
-Future<void> runInTerminal(String command) async {
+Future<void> runInTerminal(String command, {bool report = false}) async {
   final actualCommand = command.spaceSterilize.replaceAll('\n', ' ');
   log.config('running \'$actualCommand\'');
 
@@ -31,7 +31,7 @@ Future<void> runInTerminal(String command) async {
 
   final exitCode = await process.exitCode;
 
-  if (exitCode != 0) {
+  if (exitCode != 0 && report) {
     failed++;
     log.severe('\nProcess exited with error code: $exitCode');
   }

@@ -8,6 +8,7 @@ id: kflavor.app                                             # optional, base bun
 #  android: kflavor.app.android
 #  ios: kflavor.app.ios
 firebase: kflavor-app                                       # optional
+firebase_account: "yrp.baps@gmail.com"                      # optional
 scheme: kflavor                                             # optional
 app_link: kflavor.com                                       # optional
 # optional icon config
