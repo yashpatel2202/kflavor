@@ -255,15 +255,16 @@ If your `flavors.yaml` defines exactly one flavor, kflavor treats the project as
 
 The following files and directories are typically generated per-flavor or contain machine-specific configuration and can be safely added to your project's `.gitignore` (they are environment/build artifacts or local config files that should not be committed):
 ```
-/android/app/src/{any_flavor}          # generated Android flavor source directories
-/android/app/kflavor.gradle.kts        # generated Gradle Kotlin script for kflavor
-/lib/kflavor                           # generated Dart helper library
-/firebase.json                         # local Firebase emulator or config file
-/lib/firebase_options.dart             # generated FlutterFire options file
-/android/app/src/google-services.json  # Android Firebase config
-/ios/Configs/                          # generated iOS configuration directory
-/ios/Runner/GoogleService-Info.plist   # iOS Firebase config
-/lib/kflavor/                          # generated with firebase options
+/android/app/src/{any_flavor}
+/android/app/kflavor.gradle.kts
+/android/app/kflavor.gradle
+/lib/kflavor
+/firebase.json
+/lib/firebase_options.dart
+/android/app/src/google-services.json
+/ios/Configs/
+/ios/Runner/GoogleService-Info.plist
+/lib/kflavor/
 ```
 Add these entries to `.gitignore` in your project root to avoid committing local/generated config files.
 
