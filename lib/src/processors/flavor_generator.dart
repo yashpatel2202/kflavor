@@ -29,7 +29,7 @@ enum KFlavorType { ${switch (config) {
   }} }
 
 sealed class KFlavor {
-  static KFlavor? get current => ._current;
+  static KFlavor? get current => KFlavor._current;
 
   /// Flavor type
   KFlavorType get flavor;
