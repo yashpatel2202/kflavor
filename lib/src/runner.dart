@@ -205,10 +205,18 @@ Future<void> _runFlutterClean() async {
 
 // Handler for `--clear-pod`.
 Future<void> _runClearPod() async {
-  // Remove Pods/ and Podfile.lock if they exist.
-  const removeCmd =
-      'cd ios && if [ -d Pods ]; then rm -rf Pods; fi; if [ -f Podfile.lock ]; then rm -f Podfile.lock; fi;';
-  await runInTerminal(removeCmd);
+  // Remove Pods/ and Podfile.lock using Dart APIs so this works on Windows
+  // and POSIX shells equally.
+  final podsDir = Directory('ios/Pods');
+  if (podsDir.existsSync()) {
+    podsDir.deleteSync(recursive: true);
+  }
+
+  final podfileLock = File('ios/Podfile.lock');
+  if (podfileLock.existsSync()) {
+    podfileLock.deleteSync();
+  }
+
   if (Platform.isMacOS) {
     await runInTerminal('cd ios && pod install');
   } else {
@@ -241,9 +249,14 @@ Future<void> _generate(KConfig config, ArgResults args) async {
   await runInTerminal('flutter pub get');
 
   if (Platform.isMacOS) {
-    await runInTerminal(
-      'cd ios && if [ -d Pods ]; then rm -rf Pods; fi; if [ -f Podfile.lock ]; then rm -f Podfile.lock; fi; pod install',
-    );
+    // Ensure a clean iOS Pods state using Dart APIs, then run `pod install`.
+    final podsDir = Directory('ios/Pods');
+    if (podsDir.existsSync()) podsDir.deleteSync(recursive: true);
+
+    final podfileLock = File('ios/Podfile.lock');
+    if (podfileLock.existsSync()) podfileLock.deleteSync();
+
+    await runInTerminal('cd ios && pod install');
   }
 
   if (config.buildRunner) {
