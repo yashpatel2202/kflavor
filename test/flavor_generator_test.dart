@@ -21,7 +21,7 @@ PlatformConfig _platformConfig(String id) => PlatformConfig(
     developmentTeam: '',
     icon: null,
   ),
-  firebaseProject: '',
+  firebase: null,
 );
 
 void main() {
@@ -131,7 +131,7 @@ void main() {
             developmentTeam: '',
             icon: null,
           ),
-          firebaseProject: '',
+          firebase: null,
         ),
       );
 

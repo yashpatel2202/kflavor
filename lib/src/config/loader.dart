@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:kflavor/src/logging/logger.dart';
 import 'package:kflavor/src/model/config.dart';
+import 'package:kflavor/src/utils/string_utils.dart';
 import 'package:yaml/yaml.dart';
 
 part 'parser.dart';

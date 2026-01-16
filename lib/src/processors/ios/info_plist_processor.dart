@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:kflavor/src/model/config.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
+import 'package:xml/xml.dart';
 
 void updateInfoPlist(KConfig config) {
   final plistFile = File('ios/Runner/Info.plist');
@@ -14,6 +15,12 @@ void updateInfoPlist(KConfig config) {
 
   content = _setPlistKey(
     content,
+    'UILaunchStoryboardName',
+    '\$(LAUNCH_SCREEN_NAME)',
+  );
+
+  content = _setPlistKey(
+    content,
     'CFBundleIdentifier',
     '\$(PRODUCT_BUNDLE_IDENTIFIER)',
   );
@@ -22,6 +29,14 @@ void updateInfoPlist(KConfig config) {
     content,
     config.hasIOSScheme ? '\$(APP_URL_SCHEME)' : '',
   );
+
+  // Format XML content before writing. If parsing fails, keep original content.
+  try {
+    final xmlDoc = XmlDocument.parse(content);
+    content = xmlDoc.toXmlString(pretty: true, indent: '\t');
+  } catch (_) {
+    // ignore and write raw content
+  }
 
   plistFile.writeAsStringSync(content);
 }

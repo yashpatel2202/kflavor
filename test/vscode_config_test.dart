@@ -22,7 +22,7 @@ PlatformConfig _platformConfig(String id) => PlatformConfig(
     developmentTeam: '',
     icon: null,
   ),
-  firebaseProject: '',
+  firebase: null,
 );
 
 void main() {
@@ -57,7 +57,9 @@ void main() {
           {'name': 'Old Dart', 'type': 'dart', 'program': 'lib/old.dart'},
         ],
       };
-      file.writeAsStringSync(const JsonEncoder.withIndent('  ').convert(existing));
+      file.writeAsStringSync(
+        const JsonEncoder.withIndent('  ').convert(existing),
+      );
 
       final cfg = DefaultConfig(
         config: FlavorConfig(

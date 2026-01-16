@@ -7,14 +7,21 @@ id: kflavor.app                                             # optional, base bun
 #id:
 #  android: kflavor.app.android
 #  ios: kflavor.app.ios
-firebase: kflavor-app                                       # optional
-firebase_account: "yrp.baps@gmail.com"                      # optional
+firebase:                                                   # optional
+  project: kflavor-app
+  account: "yrp.baps@gmail.com"                             # optional
+  web_id: "1:83139990596:web:f65c2cb5692b38e3985811"        # optional
 scheme: kflavor                                             # optional
 app_link: kflavor.com                                       # optional
 # optional icon config
 icon:
   ios: assets/icon/icon.png
   android:
+    path: assets/icon/icon_android.png
+    background: "#FFFFFF"
+splash:
+  background: "#FFFFFF"
+  icon:                                                     # optional, uses icon config if not defined
     path: assets/icon/icon_android.png
     background: "#FFFFFF"
 ios_development_team: ABCD1EFG2H
@@ -26,13 +33,21 @@ flavors:
   dev:
     name: KFlavor Dev                                       # required if not defined globally
     id: kflavor.app.dev                                     # required if not defined globally
-    firebase: kflavor-app-dev                               # optional, use global otherwise blank
+    firebase:                                               # optional, use global otherwise blank
+      project: kflavor-app-dev
+      account: "yrp.baps@gmail.com"
+      web_id: "1:370962456122:web:75315d74ed8931b0c19f03"
     scheme: kflavor-dev                                     # optional, use global otherwise blank
     app_link: dev.kflavor.com                               # optional, use global otherwise blank
 #   flavor specific icon override (optional)
     icon:
       ios: assets/icon/icon_dev.png
       android:
+        path: assets/icon/icon_android.png
+        background: "#e0f9ff"
+    splash:
+      background: "#FFFFFF"
+      icon:
         path: assets/icon/icon_android.png
         background: "#e0f9ff"
 
@@ -43,8 +58,13 @@ flavors:
     scheme: kflavor-qa
     app_link: qa.kflavor.com
     icon:
-      ios: assets/icon/icon_dev.png
+      ios: assets/icon/icon_qa.png
       android:
+        path: assets/icon/icon_android.png
+        background: "#e0f9ff"
+    splash:
+      background: "#FFFFFF"
+      icon:
         path: assets/icon/icon_android.png
         background: "#e0f9ff"
 

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.9
+- Add native splash support.
+- Added support for web-id (firebase)
+- Accept flexible `firebase` configuration (string or map) with legacy `firebase_account` fallback.
+
 ## 1.0.8
 - Multiple firebase account support added.
 

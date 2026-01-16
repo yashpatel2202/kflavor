@@ -25,7 +25,7 @@ PlatformConfig _platformConfigWith({
     developmentTeam: '',
     icon: null,
   ),
-  firebaseProject: '',
+  firebase: null,
 );
 
 void main() {

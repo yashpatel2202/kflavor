@@ -21,7 +21,7 @@ PlatformConfig _platformConfig({String iosScheme = ''}) => PlatformConfig(
     developmentTeam: '',
     icon: null,
   ),
-  firebaseProject: '',
+  firebase: null,
 );
 
 void main() {
@@ -180,6 +180,33 @@ void main() {
       final updated = file.readAsStringSync();
       expect(updated.contains('CFBundleURLTypes'), isFalse);
       expect(updated.contains('toremove'), isFalse);
+    });
+
+    test('sets bundle name and display name', () {
+      const content = '''<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.example</string>
+</dict>
+</plist>
+''';
+
+      final file = File('ios/Runner/Info.plist');
+      file.writeAsStringSync(content);
+
+      final cfg = DefaultConfig(
+        config: FlavorConfig(flavor: 'main', config: _platformConfig()),
+        buildRunner: false,
+      );
+
+      updateInfoPlist(cfg);
+
+      final updated = file.readAsStringSync();
+      expect(updated.contains('<key>CFBundleDisplayName</key>'), isTrue);
+      expect(updated.contains('<key>CFBundleName</key>'), isTrue);
+      expect(updated.contains('<key>UILaunchStoryboardName</key>'), isTrue);
     });
   });
 }

@@ -6,6 +6,7 @@ import 'package:kflavor/src/processors/ios/info_plist_processor.dart';
 import 'package:kflavor/src/processors/ios/podfile_processor.dart';
 import 'package:kflavor/src/utils/string_utils.dart';
 import 'package:kflavor/src/utils/terminal_utils.dart';
+import 'package:recase/recase.dart';
 
 /// Create or update the Xcode project using `xcodegen` based on `config`.
 ///
@@ -137,10 +138,12 @@ String _targetLine(
   String scheme,
   String appLink,
   String devTeam,
+  bool hasSplash,
 ) {
   return '''        $type${flavor.hasValue ? '-$flavor' : ''}:
           PRODUCT_BUNDLE_IDENTIFIER: $bundleId
           APP_NAME: $appName
+          LAUNCH_SCREEN_NAME: LaunchScreen${flavor.hasValue && hasSplash ? flavor.pascalCase : ''}
           ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon${flavor.hasValue ? '-$flavor' : ''}${_getDeepLinkLines(scheme)}${_getAppLinkLines(appLink)}${_getDevelopmentTeam(devTeam)}''';
 }
 
@@ -151,13 +154,14 @@ String _getFlavoredTargetLines(FlavorConfig config) {
   final scheme = config.config.ios.scheme;
   final appLink = config.config.ios.appLink;
   final devTeam = config.config.ios.developmentTeam;
+  final hasSplash = config.config.splash != null;
 
   return '''
-${_targetLine('Debug', bundle, name, flavor, scheme, appLink, devTeam)}
+${_targetLine('Debug', bundle, name, flavor, scheme, appLink, devTeam, hasSplash)}
 
-${_targetLine('Profile', bundle, name, flavor, scheme, appLink, devTeam)}
+${_targetLine('Profile', bundle, name, flavor, scheme, appLink, devTeam, hasSplash)}
 
-${_targetLine('Release', bundle, name, flavor, scheme, appLink, devTeam)}
+${_targetLine('Release', bundle, name, flavor, scheme, appLink, devTeam, hasSplash)}
 ''';
 }
 

@@ -74,7 +74,7 @@ class FlavorConfig {
   final PlatformConfig config;
 
   /// True when this flavor has an associated Firebase project id.
-  bool get hasFirebase => config.firebaseProject.hasValue;
+  bool get hasFirebase => (config.firebase?.project).hasValue;
 
   const FlavorConfig({required this.flavor, required this.config});
 }
@@ -83,14 +83,27 @@ class FlavorConfig {
 class PlatformConfig {
   final Config android;
   final Config ios;
-  final String firebaseAccount;
-  final String firebaseProject;
+  final FirebaseConfig? firebase;
+  final SplashConfig? splash;
 
   const PlatformConfig({
     required this.android,
     required this.ios,
-    this.firebaseAccount = '',
-    required this.firebaseProject,
+    this.firebase,
+    this.splash,
+  });
+}
+
+/// Firebase configuration for a platform.
+class FirebaseConfig {
+  final String project;
+  final String account;
+  final String webId;
+
+  const FirebaseConfig({
+    required this.project,
+    this.account = '',
+    this.webId = '',
   });
 }
 
@@ -129,6 +142,19 @@ class IconConfig {
   final String background;
 
   const IconConfig({required this.path, required this.background});
+}
+
+/// Configuration for the app splash screen (shared across platforms).
+class SplashConfig {
+  final String iconPath;
+  final String iconBackground;
+  final String background;
+
+  const SplashConfig({
+    required this.iconPath,
+    required this.iconBackground,
+    required this.background,
+  });
 }
 
 /// Helper extension to map and join flavor-specific content for generators.

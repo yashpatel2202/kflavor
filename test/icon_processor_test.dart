@@ -26,7 +26,7 @@ PlatformConfig _platformConfig({
     developmentTeam: '',
     icon: iosIcon.hasValue ? IconConfig(path: iosIcon, background: '') : null,
   ),
-  firebaseProject: '',
+  firebase: null,
 );
 
 extension _StringX on String {
