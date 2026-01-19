@@ -34,106 +34,156 @@ class KFlavorRunner {
   /// `--configure-vscode` and executes the corresponding steps. Errors are
   /// logged to the shared `log` instance.
   Future<void> run(List<String> args) async {
+    final parser = ArgParser()
+      ..addFlag(
+        'help',
+        abbr: 'h',
+        help: 'Display help message',
+        negatable: false,
+      )
+      ..addOption(
+        'file',
+        abbr: 'f',
+        help: 'Path to configuration file',
+        valueHelp: 'path/to/kflavor.yaml',
+      )
+      ..addFlag(
+        'configure-android-studio',
+        help: 'Generate Android Studio run configurations',
+        defaultsTo: false,
+      )
+      ..addFlag(
+        'cas',
+        help: 'Alias for --configure-android-studio',
+        defaultsTo: false,
+      )
+      ..addFlag(
+        'configure-vscode',
+        help: 'Generate VSCode run/debug configurations',
+        defaultsTo: false,
+      )
+      ..addFlag('cvs', help: 'Alias for --configure-vscode', defaultsTo: false);
+
+    // Register top-level subcommands. Users can call `kflavor generate` or
+    // `kflavor configure`.
+    // Define `generate` subcommand and add common flags so options can be
+    // passed after the subcommand (e.g. `kflavor generate --file path`).
+    parser.addCommand('generate')
+      ..addFlag(
+        'help',
+        abbr: 'h',
+        help: 'Display help message',
+        negatable: false,
+      )
+      ..addOption(
+        'file',
+        abbr: 'f',
+        help: 'Path to configuration file',
+        valueHelp: 'path/to/kflavor.yaml',
+      )
+      ..addFlag(
+        'configure-android-studio',
+        help: 'Generate Android Studio run configurations',
+        defaultsTo: false,
+      )
+      ..addFlag(
+        'cas',
+        help: 'Alias for --configure-android-studio',
+        defaultsTo: false,
+      )
+      ..addFlag(
+        'configure-vscode',
+        help: 'Generate VSCode run/debug configurations',
+        defaultsTo: false,
+      )
+      ..addFlag('cvs', help: 'Alias for --configure-vscode', defaultsTo: false);
+
+    // Add flags for the `configure` subcommand. We add both long and short
+    // aliases where requested (e.g. --android-studio and --as).
+    parser.addCommand('configure')
+      ..addFlag(
+        'help',
+        abbr: 'h',
+        help: 'Display help message',
+        negatable: false,
+      )
+      ..addOption(
+        'file',
+        abbr: 'f',
+        help: 'Path to configuration file',
+        valueHelp: 'path/to/kflavor.yaml',
+      )
+      ..addFlag(
+        'flutter-clean',
+        help: 'Run `flutter clean && flutter pub get`',
+        defaultsTo: false,
+      )
+      ..addFlag(
+        'clear-pod',
+        help:
+            "Remove iOS Pods/ and Podfile.lock and run `pod install` on macOS",
+        defaultsTo: false,
+      )
+      ..addFlag(
+        'android-studio',
+        help: 'Generate Android Studio run configurations',
+        defaultsTo: false,
+      )
+      ..addFlag('as', help: 'Alias for --android-studio', defaultsTo: false)
+      ..addFlag(
+        'vscode',
+        help: 'Generate VSCode run/debug configurations',
+        defaultsTo: false,
+      )
+      ..addFlag('vs', help: 'Alias for --vscode', defaultsTo: false)
+      ..addFlag(
+        'firebase',
+        help: 'Run firebase configuration (flutterfire configure)',
+        defaultsTo: false,
+      )
+      ..addFlag('fb', help: 'Alias for --firebase', defaultsTo: false);
+
     try {
-      final parser = ArgParser()
-        ..addFlag('help', abbr: 'h', help: 'Display help message')
-        ..addOption(
-          'file',
-          abbr: 'f',
-          help: 'Path to configuration file',
-          valueHelp: 'path/to/kflavor.yaml',
-        )
-        ..addFlag(
-          'configure-android-studio',
-          help: 'Generate Android Studio run configurations',
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'cas',
-          help: 'Alias for --configure-android-studio',
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'configure-vscode',
-          help: 'Generate VSCode run/debug configurations',
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'cvs',
-          help: 'Alias for --configure-vscode',
-          defaultsTo: false,
-        );
-
-      // Register top-level subcommands. Users can call `kflavor generate` or
-      // `kflavor configure`.
-      // Define `generate` subcommand and add common flags so options can be
-      // passed after the subcommand (e.g. `kflavor generate --file path`).
-      parser.addCommand('generate')
-        ..addOption(
-          'file',
-          abbr: 'f',
-          help: 'Path to configuration file',
-          valueHelp: 'path/to/kflavor.yaml',
-        )
-        ..addFlag(
-          'configure-android-studio',
-          help: 'Generate Android Studio run configurations',
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'cas',
-          help: 'Alias for --configure-android-studio',
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'configure-vscode',
-          help: 'Generate VSCode run/debug configurations',
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'cvs',
-          help: 'Alias for --configure-vscode',
-          defaultsTo: false,
-        );
-
-      // Add flags for the `configure` subcommand. We add both long and short
-      // aliases where requested (e.g. --android-studio and --as).
-      parser.addCommand('configure')
-        ..addFlag(
-          'flutter-clean',
-          help: 'Run `flutter clean && flutter pub get`',
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'clear-pod',
-          help:
-              "Remove iOS Pods/ and Podfile.lock and run `pod install` on macOS",
-          defaultsTo: false,
-        )
-        ..addFlag(
-          'android-studio',
-          help: 'Generate Android Studio run configurations',
-          defaultsTo: false,
-        )
-        ..addFlag('as', help: 'Alias for --android-studio', defaultsTo: false)
-        ..addFlag(
-          'vscode',
-          help: 'Generate VSCode run/debug configurations',
-          defaultsTo: false,
-        )
-        ..addFlag('vs', help: 'Alias for --vscode', defaultsTo: false);
-
       final result = parser.parse(args);
 
       if (result['help'] as bool) {
-        log.info(parser.usage);
+        _printRootHelp(parser);
+        return;
+      }
+
+      if (result.command != null && (result.command!['help'] as bool)) {
+        log.info(parser.commands[result.command!.name]!.usage);
+        return;
+      }
+
+      if (result.command == null && result.rest.isNotEmpty) {
+        _printRootHelp(parser);
         return;
       }
 
       await _execute(result);
+    } on FormatException {
+      final commandName = args.isNotEmpty ? args.first : null;
+      if (commandName != null && parser.commands.keys.contains(commandName)) {
+        log.info(parser.commands[commandName]!.usage);
+      } else {
+        _printRootHelp(parser);
+      }
     } catch (e) {
       log.severe(e);
     }
+  }
+
+  void _printRootHelp(ArgParser parser) {
+    final buffer = StringBuffer();
+    buffer.writeln(parser.usage);
+
+    parser.commands.forEach((name, commandParser) {
+      buffer.writeln('\nCommand: $name');
+      buffer.writeln(commandParser.usage);
+    });
+
+    log.info(buffer.toString());
   }
 
   Future<void> _execute(ArgResults args) async {
@@ -184,8 +234,13 @@ Future<void> _configure(KConfig config, ArgResults args) async {
   final vscode =
       ((sub['vscode'] as bool?) ?? false) || ((sub['vs'] as bool?) ?? false);
 
+  // --firebase / --fb
+  final firebase =
+      ((sub['firebase'] as bool?) ?? false) || ((sub['fb'] as bool?) ?? false);
+
   // Call each handler separately. No `else` branches are used so multiple
   // flags can be combined and each handler remains isolated.
+  if (firebase) await _runFirebase(config);
   if (flutterClean) await _runFlutterClean();
   if (clearPod) await _runClearPod();
   if (androidStudio) _runAndroidStudioConfig(config);
@@ -235,6 +290,11 @@ void _runAndroidStudioConfig(KConfig config) {
 // Handler for `--vscode` / `--vs`.
 void _runVSCodeConfig(KConfig config) {
   generateVSCodeRunConfig(config);
+}
+
+// Handler for `--firebase` / `--fb`.
+Future<void> _runFirebase(KConfig config) async {
+  await setupFirebase(config);
 }
 
 Future<void> _generate(KConfig config, ArgResults args) async {

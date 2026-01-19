@@ -1,6 +1,6 @@
-<p align="center">
+<div style="text-align: center">
 <img src="https://raw.githubusercontent.com/yashpatel2202/kflavor/main/banner_mini.jpg" alt="kflavor" />
-</p>
+</div>
 
 # kflavor
 
@@ -39,11 +39,13 @@ Note: Recent releases introduce two explicit subcommands — `generate` and `con
 ### Basic CLI
 
 You can run the default (generate) workflow with:
+
 ```sh
 dart run kflavor generate
 ```
 
 Or use the new subcommand form to be explicit and to place flags after the subcommand:
+
 ```sh
 dart run kflavor generate --file flavors.yaml
 dart run kflavor configure --flutter-clean --android-studio
@@ -53,7 +55,7 @@ dart run kflavor configure --flutter-clean --android-studio
 
 - generate
   - Runs the full generation workflow: Firebase setup, Android/iOS updates, icons, and optional build-runner steps.
-  - Accepts the same common flags as the root parser (for convenience): 
+  - Accepts the same common flags as the root parser (for convenience):
     - `--file` / `-f`
     - `--configure-android-studio`/`--cas`
     - `--configure-vscode`/`--cvs`.
@@ -61,12 +63,15 @@ dart run kflavor configure --flutter-clean --android-studio
 - configure
   - Use this subcommand to run environment maintenance and IDE generation tasks without performing the whole `generate` sequence.
   - Flags supported by `configure`:
+    - `--file` or `-f` — Path to configuration file.
     - `--flutter-clean` — run `flutter clean && flutter pub get`.
     - `--clear-pod` — remove `ios/Pods/` and `ios/Podfile.lock` (if present) and run `pod install` on macOS.
     - `--android-studio` or `--as` — generate Android Studio run/debug configurations (calls `generateAndroidStudioRunConfig`).
     - `--vscode` or `--vs` — generate VSCode run/debug configurations (calls `generateVSCodeRunConfig`).
+    - `--firebase` or `--fb` — run firebase configuration (flutterfire configure).
 
 Examples:
+
 ```sh
 # Full generate workflow (same as running without a subcommand)
 dart run kflavor generate --file flavors.yaml
@@ -76,7 +81,9 @@ dart run kflavor configure --flutter-clean --clear-pod --android-studio
 ```
 
 ### Generate IDE Configurations
+
 To Auto-generate IDE Run/Debug config, use the following flags or subcommands:
+
 - Android Studio:
   ```sh
   dart run kflavor configure --android-studio
@@ -127,11 +134,13 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
   ```
 
 - `name` — Optional global display name for the app; flavors may override it with their own `name`.
+
   ```yaml
   name: MyApp
   ```
 
 - `id` — Global bundle/application id used by Android (applicationId) and iOS (bundle identifier). Can be a string or a platform map.
+
   ```yaml
   # single id for both platforms
   id: com.example.myapp
@@ -145,25 +154,30 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
   ```
 
 - `firebase` — Optional Firebase setting per flavor.
+
   ```yaml
   firebase:
     project: my-firebase-project-id
     account: user@example.com
     web_id: 123:XXXXXXXXXX
   ```
+
   - Multi-account setup: see the Firebase CLI documentation for managing multiple accounts and authentication (useful when you run `firebase` commands from different accounts): https://firebase.google.com/docs/cli
 
 - `scheme` — Optional URL scheme for deep links (overrides per-flavor if set there).
+
   ```yaml
   scheme: myapp
   ```
 
 - `app_link` — Optional App Link / Universal Link domain for the app (e.g. `example.com`).
+
   ```yaml
   app_link: app.example.com
   ```
 
 - `icon` — Global icon configuration. Use `ios` for iOS icon path and `android` for Android icon config (path and optional adaptive background color).
+
   ```yaml
   icon:
     ios: assets/icon/icon.png
@@ -171,6 +185,7 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
       path: assets/icon/icon_android.png
       background: "#FFFFFF"
   ```
+
   - `icon.ios` — path to the iOS icon source image (relative to project root).
     `ios: assets/icon/icon.png`
   - `icon.android.path` — path to the Android icon source image.
@@ -186,8 +201,8 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
       path: assets/icon/icon_android.png
       background: "#FFFFFF"
   ```
-  
 - `ios_development_team` — Optional Apple Team ID used for automatic signing when generating Xcode targets.
+
   ```yaml
   ios_development_team: ABCD1EFG2H
   ```
@@ -198,6 +213,7 @@ Below is a compact 1–2 line reference for every supported key in `flavors.yaml
   ```
 
 Per-flavor keys (inside `flavors:`)
+
 - Each flavor is a mapping that can include the same keys as the global config; values here override the global values.
 
   ```yaml
@@ -216,6 +232,7 @@ Per-flavor keys (inside `flavors:`)
   ```
 
 Notes & quick tips
+
 - Quote hex colors (e.g. `"#e0f9ff"`) so YAML doesn't treat `#` as a comment.
 - Paths are relative to the repository root (where `pubspec.yaml` lives).
 - Use platform-specific `id` mappings when Android and iOS identifiers must differ.
@@ -242,21 +259,26 @@ Preparation checklist and recommendations:
 Below are common terminal commands and patterns for running, building, and archiving your app for a specific flavor. Replace `<flavor>` with your flavor name.
 
 - Flutter (run on device/emulator):
+
   ```
   flutter run --flavor <flavor>
   ```
+
   - If you have a single-flavor project, you can often run `flutter run` without `--flavor` (use your default entrypoint as appropriate).
 
 - Flutter (build Android APK / AAB):
+
   ```
   flutter build apk --flavor <flavor>
   flutter build appbundle --flavor <flavor>
   ```
 
 - Flutter (build iOS / create an .ipa):
+
   ```
   flutter build ipa --flavor <flavor>
   ```
+
   - Alternatively archive with Xcode:
     - Open `ios/Runner.xcworkspace`, select the scheme for your flavor and Archive via Xcode's Product → Archive.
 
@@ -267,6 +289,7 @@ If your `flavors.yaml` defines exactly one flavor, kflavor treats the project as
 ### Safely git-ignorable files
 
 The following files and directories are typically generated per-flavor or contain machine-specific configuration and can be safely added to your project's `.gitignore` (they are environment/build artifacts or local config files that should not be committed):
+
 ```
 /android/app/src/{any_flavor}
 /android/app/kflavor.gradle.kts
@@ -279,6 +302,7 @@ The following files and directories are typically generated per-flavor or contai
 /ios/Runner/GoogleService-Info.plist
 /lib/kflavor/
 ```
+
 Add these entries to `.gitignore` in your project root to avoid committing local/generated config files.
 
 ## Advanced
