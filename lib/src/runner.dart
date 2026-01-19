@@ -121,7 +121,13 @@ class KFlavorRunner {
           help: 'Generate VSCode run/debug configurations',
           defaultsTo: false,
         )
-        ..addFlag('vs', help: 'Alias for --vscode', defaultsTo: false);
+        ..addFlag('vs', help: 'Alias for --vscode', defaultsTo: false)
+        ..addFlag(
+          'firebase',
+          help: 'Run firebase configuration (flutterfire configure)',
+          defaultsTo: false,
+        )
+        ..addFlag('fb', help: 'Alias for --firebase', defaultsTo: false);
 
       final result = parser.parse(args);
 
@@ -184,8 +190,13 @@ Future<void> _configure(KConfig config, ArgResults args) async {
   final vscode =
       ((sub['vscode'] as bool?) ?? false) || ((sub['vs'] as bool?) ?? false);
 
+  // --firebase / --fb
+  final firebase =
+      ((sub['firebase'] as bool?) ?? false) || ((sub['fb'] as bool?) ?? false);
+
   // Call each handler separately. No `else` branches are used so multiple
   // flags can be combined and each handler remains isolated.
+  if (firebase) await _runFirebase(config);
   if (flutterClean) await _runFlutterClean();
   if (clearPod) await _runClearPod();
   if (androidStudio) _runAndroidStudioConfig(config);
@@ -235,6 +246,11 @@ void _runAndroidStudioConfig(KConfig config) {
 // Handler for `--vscode` / `--vs`.
 void _runVSCodeConfig(KConfig config) {
   generateVSCodeRunConfig(config);
+}
+
+// Handler for `--firebase` / `--fb`.
+Future<void> _runFirebase(KConfig config) async {
+  await setupFirebase(config);
 }
 
 Future<void> _generate(KConfig config, ArgResults args) async {
