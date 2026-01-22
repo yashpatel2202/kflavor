@@ -48,12 +48,11 @@ sealed class KFlavor {
         .firstOrNull;
     
     return switch (flavor) {
-      null => null,
+      null => ${_currentFlavorSwitch('none')},
 ${switch (config) {
     DefaultConfig() => _currentFlavorSwitch('none'),
     FlavoredConfig() => config.flavors.map((e) => _currentFlavorSwitch(e.flavor)).join(''),
-  }}
-    };
+  }}    };
   }
 }
 
