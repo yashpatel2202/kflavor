@@ -48,7 +48,7 @@ sealed class KFlavor {
         .firstOrNull;
     
     return switch (flavor) {
-      null => ${_currentFlavorSwitch('none')},
+      null => const _NoneFlavor(),
 ${switch (config) {
     DefaultConfig() => _currentFlavorSwitch('none'),
     FlavoredConfig() => config.flavors.map((e) => _currentFlavorSwitch(e.flavor)).join(''),
