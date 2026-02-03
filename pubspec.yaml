@@ -1,6 +1,6 @@
 name: kflavor
 description: "kflavor automates flutter multi-flavor configuration for android, iOS and web, managing firebase settings, icons, splash screens, gradle/xcode config, and IDE run/debug profiles."
-version: 1.1.3
+version: 1.1.4
 homepage: https://kflavor.iamyash.in/
 repository: https://github.com/yashpatel2202/kflavor
 issue_tracker: https://github.com/yashpatel2202/kflavor/issues

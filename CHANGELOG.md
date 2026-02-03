@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.4
+
+- Deep link scheme fix for iOS.
+
 ## 1.1.3
 
 - Single flavor issue fixed.
