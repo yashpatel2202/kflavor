@@ -54,7 +54,11 @@ String _setPlistKey(String plist, String key, String value) {
     return plist.replaceFirst(keyRegex, replacement);
   }
 
-  return plist.replaceFirst('</dict>', '$replacement\n</dict>');
+  final lastIndex = plist.lastIndexOf('</dict>');
+  if (lastIndex != -1) {
+    return '${plist.substring(0, lastIndex)}$replacement\n</dict>${plist.substring(lastIndex + 7)}';
+  }
+  return plist;
 }
 
 String _setCFBundleURLScheme(String plist, String scheme) {
@@ -93,5 +97,9 @@ String _setCFBundleURLScheme(String plist, String scheme) {
 \t    </array>
 \t  </dict>
 \t</array>''';
-  return plist.replaceFirst('</dict>', '$insertBlock\n</dict>');
+  final lastIndex = plist.lastIndexOf('</dict>');
+  if (lastIndex != -1) {
+    return '${plist.substring(0, lastIndex)}$insertBlock\n</dict>${plist.substring(lastIndex + 7)}';
+  }
+  return plist;
 }
